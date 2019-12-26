@@ -1,10 +1,20 @@
 import tkinter
-import tkinter.scrolledtext as ScrolledText
-import tkinter.scrolledtext as ScrolledText
-
 
 class FileFrame():
     def __init__(self):
+        file_tabs = []
+        pass
+
+    def new_file(self):
+        pass
+
+    def load_file(self, path):
+        pass
+
+    def save_file(self, path):
+        pass
+
+    def save_all_files(self):
         pass
 
 

@@ -35,6 +35,7 @@ class MainWindow(tk.Frame):
     # Construct window.
     def __init__(self, root: Type['tk.Tk'], *args: tuple, **kwargs: dict) -> None:
         tk.Frame.__init__(self, root, *args, **kwargs)
+        self.pack(fill=tk.BOTH, expand=1)
 
         # Path to store information etc.
         def load_environment_config() -> None:
@@ -49,17 +50,21 @@ class MainWindow(tk.Frame):
 
         # Setup menubar
         def top_menu_bar_setup() -> Type['MenuBar']:
-            _menubar = MenuBar(root, MainWindow) #To-Do
-            pass
+            menubar = MenuBar(root, MainWindow) #To-Do
+            return menubar
 
         # Setup bottom panel with console view, terminal redirections, etc.
         def bottom_panel_setup() -> Type['BottomPanel']:
-            #~ bottom_panel = BottomPanel() #ToDo
-            pass
+            bottom_frame = tk.LabelFrame(root, padx=1, pady=1)
+            bottom_frame.rowconfigure(0, weight=1)
+            bottom_frame.columnconfigure(0, weight=1)
+            bottompanel = BottomPanel(bottom_frame) #ToDo
+            bottom_frame.pack(side = tk.BOTTOM, fill = tk.X, expand=True)
+            return bottompanel
 
         # Left panel to navigate over files and methods
         def project_left_panel_setup() -> Type['ProjectManager']:
-            #~ project_manager = ProjectManager() #ToDo
+            project_manager = ProjectManager() #ToDo
             pass
             
         # Load stored previously data
@@ -71,16 +76,19 @@ class MainWindow(tk.Frame):
 
         load_environment_config()
         general_window_setup()
+        self._bottompanel = bottom_panel_setup()
 
         #Frames:
         self._menubar = top_menu_bar_setup()
-        self._bottompanel = bottom_panel_setup()
         self._projectmanager = project_left_panel_setup()
         self._opened_files = load_last_data()
         
         root.protocol("WM_DELETE_WINDOW", lambda: MainWindow.exit_(self._root))
-        
-        tk.Button(self._root, text="TEST").pack()
+
+        def update():
+            logging.debug("FOO")
+            root.after(5000, update)
+        root.after(1000, update)
 
     @classmethod
     def exit_(cls, root):
@@ -123,5 +131,5 @@ def mainloop():
 
 if __name__ == "__main__" and __debug__:
     logging.basicConfig(level=logging.DEBUG,
-                        format=' %(name)s - %(levelname)-8s %(message)s')
+                        format='%(name)s - %(levelname)-8s %(message)s')
     mainloop()
