@@ -78,13 +78,16 @@ class MainWindow(tk.Frame):
         self._projectmanager = project_left_panel_setup()
         self._opened_files = load_last_data()
         
-        tk.Button(self._root, text="KUPA").pack()
+        root.protocol("WM_DELETE_WINDOW", lambda: MainWindow.exit_(self._root))
+        
+        tk.Button(self._root, text="TEST").pack()
 
     @classmethod
     def exit_(cls, root):
         logging.debug("`MainWindow.exit` called")
         TkHelper.save_position(root)
         Default.save()
+        root.destroy()
 
     @classmethod
     def new_file(cls):
@@ -102,8 +105,8 @@ class MainWindow(tk.Frame):
         pass
         
     @classmethod
-    def configure_settings(cls, as_new: bool=False) -> None:
-        logging.debug("`MainWindow.save_file` called")
+    def configure_settings(cls) -> None:
+        logging.debug("`MainWindow.configure_settings` called")
         pass
 
 class MainFrameErrorCatcher():

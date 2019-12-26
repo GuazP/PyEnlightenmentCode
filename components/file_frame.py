@@ -9,7 +9,7 @@ class FileFrame():
 
 
 class FileContent():
-    def __init__(self, frame)
+    def __init__(self, frame):
         self.frame = frame
         self.textarea = Text(frame)
         self.scrollbar = Scrollbar(self.textarea)
