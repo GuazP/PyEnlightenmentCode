@@ -25,13 +25,13 @@ class MenuBar():
         self.menubar.add_cascade(label = "Edit", menu = self.editmenu) 
 
         #########> TOOL MENU <#########
-        self.toolmenu.add_command(label = "Execute", command = lambda: None) 
-        self.toolmenu.add_cascade(label = "Build binary", menu = lambda: None) 
+        self.toolmenu.add_command(label = "Execute", command = lambda: None) #To-Do
+        self.toolmenu.add_cascade(label = "Build binary", menu = lambda: None) #To-Do
         self.menubar.add_cascade(label = "Tools", menu = self.toolmenu) 
 
         #########> HELP MENU <#########
-        self.helpmenu.add_command(label = "About PyEnlightenmentCode", command = lambda: None) 
-        self.helpmenu.add_cascade(label = "License", menu = lambda: None) 
+        self.helpmenu.add_command(label = "About PyEnlightenmentCode", command = lambda: None) #To-Do
+        self.helpmenu.add_cascade(label = "License", menu = lambda: None) #To-Do
         self.menubar.add_cascade(label = "Help", menu = self.helpmenu) 
 
         #########> CONFIG TO ROOT <#########
