@@ -15,24 +15,15 @@ def main():
     mainloop()
 
 def argparse_logging_settings():
-    #~ parser.add_argument("-q", "--quiet", help="set logging to ERROR",
-                        #~ action="store_const", dest="loglevel",
-                        #~ const=logging.ERROR, default=logging.ERROR)
-    #~ parser.add_argument("-i", "--info", help="set logging to INFO",
-                        #~ action="store_const", dest="loglevel",
-                        #~ const=logging.INFO, default=logging.ERROR)
-    #~ parser.add_argument("-d", "--debug", help="set logging to DEBUG",
-                        #~ action="store_const", dest="loglevel",
-                        #~ const=logging.DEBUG, default=logging.ERROR)
     parser.add_argument("-q", "--quiet", help="set logging to ERROR",
                         action="store_const", dest="loglevel",
-                        const=logging.ERROR, default=logging.DEBUG)
+                        const=logging.ERROR, default=logging.ERROR)
     parser.add_argument("-i", "--info", help="set logging to INFO",
                         action="store_const", dest="loglevel",
-                        const=logging.INFO, default=logging.DEBUG)
+                        const=logging.INFO, default=logging.ERROR)
     parser.add_argument("-d", "--debug", help="set logging to DEBUG",
                         action="store_const", dest="loglevel",
-                        const=logging.DEBUG, default=logging.DEBUG)
+                        const=logging.DEBUG, default=logging.ERROR)
 
 def argparse_program_settings():
     pass

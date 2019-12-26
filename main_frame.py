@@ -1,10 +1,10 @@
 ## MainFrame libraries
 import tkinter as tk
-import pickle
 import typing
 from typing import Type
 from typing import List
 import logging
+import re
 
 ## MainFrame using
 from components.file_frame import FileFrame
@@ -13,7 +13,10 @@ from components.bottom_frame import BottomPanel
 from components.project_frame import ProjectManager
 
 ## MainFrame defaults
-from defaults.main_frame import Default
+from defaults.tkhelper import Default
+
+## TkSettingsHelper
+from defaults.tkhelper import TkHelper
 
 class MainWindow(tk.Frame):
     __instance: 'MainWindow' = None
@@ -35,17 +38,18 @@ class MainWindow(tk.Frame):
 
         # Path to store information etc.
         def load_environment_config() -> None:
-            config = None ## Pickled data loading
-            Default(self).path: str = config
-            #~ print(self.path)
-
-        # Center (x,y), window title, etc.
+            config = Default.load()
+            Default(self).path: str = config.get("path")
+            Default(self).darkmode: bool = config.get("darkmode")
+            
+        # Center (x,y), window title, default widget style etc.
         def general_window_setup() -> None:
-            pass
+            TkHelper.configure_window(self._root, title="PyEnlightenmentCode")
+            TkHelper.configure_visual(self._root, self.darkmode, "Button", "Text", "Label")
 
         # Setup menubar
         def top_menu_bar_setup() -> Type['MenuBar']:
-            #~ menubar = MenuBar() #ToDo
+            _menubar = MenuBar(root, MainWindow) #To-Do
             pass
 
         # Setup bottom panel with console view, terminal redirections, etc.
@@ -73,11 +77,33 @@ class MainWindow(tk.Frame):
         self._bottompanel = bottom_panel_setup()
         self._projectmanager = project_left_panel_setup()
         self._opened_files = load_last_data()
+        
+        tk.Button(self._root, text="KUPA").pack()
 
-    def __exit__(self) -> None:
-        def save_existing_data():
-            pass
+    @classmethod
+    def exit_(cls, root):
+        logging.debug("`MainWindow.exit` called")
+        TkHelper.save_position(root)
+        Default.save()
 
+    @classmethod
+    def new_file(cls):
+        logging.debug("`MainWindow.new_file` called")
+        pass
+
+    @classmethod
+    def load_file(cls):
+        logging.debug("`MainWindow.load_file` called")
+        pass
+
+    @classmethod
+    def save_file(cls, as_new: bool=False) -> None:
+        logging.debug("`MainWindow.save_file` called")
+        pass
+        
+    @classmethod
+    def configure_settings(cls, as_new: bool=False) -> None:
+        logging.debug("`MainWindow.save_file` called")
         pass
 
 class MainFrameErrorCatcher():
