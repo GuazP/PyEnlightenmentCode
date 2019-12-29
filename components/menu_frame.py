@@ -26,7 +26,9 @@ class MenuBar():
 
         #########> TOOL MENU <#########
         self.toolmenu.add_command(label = "Execute", command = lambda: None) #To-Do
+        self.toolmenu.add_cascade(label = "Debug", menu = lambda: None) #To-Do
         self.toolmenu.add_cascade(label = "Build binary", menu = lambda: None) #To-Do
+        self.toolmenu.add_cascade(label = "Build block scheme", menu = lambda: None) #To-Do
         self.menubar.add_cascade(label = "Tools", menu = self.toolmenu) 
 
         #########> HELP MENU <#########

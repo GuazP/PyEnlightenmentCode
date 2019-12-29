@@ -5,10 +5,11 @@ from tkinter import scrolledtext
 
 class BottomPanel():
     def __init__(self, frame):
-        self.text_area = scrolledtext.ScrolledText(frame)
+        self.selector1 = tk.Button(frame, text="Editor Info")
+        self.selector1.grid(row=0, column=0, sticky="snew")
+        self.text_area = scrolledtext.ScrolledText(frame, height=10)
         self.text_handler = TextHandler(self.text_area)
-        #~ self.text_area.grid(row=0, column=0, sticky=tk.E+tk.W+tk.N+tk.S)
-        self.text_area.grid(row=0, column=0, sticky="nsew")
+        self.text_area.grid(row=0, column=1, rowspan = 3, columnspan=6, sticky="snew")
         logger = logging.getLogger()
         logger.addHandler(self.text_handler)
 
