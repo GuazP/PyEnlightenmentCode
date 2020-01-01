@@ -85,7 +85,7 @@ class TkHelper():
         Default.set("wind_y", wind_y)
 
     @staticmethod
-    def config_tags(text: Type['CustomText']) -> None:
+    def config_tags(text: Type['ProgrammingText']) -> None:
         prefix = "d" if Default.get("darkmode") else "b"
         normal_font = Default.get("basic_font")
         bolded_font = Default.get("highlight_font")
@@ -102,41 +102,63 @@ class TkHelper():
         #~ text.tag_config("class-name", foreground=Default.get("font_color_class", '#FFF500'), font=Default.basic_font) #To-Do
         #~ text.tag_config("func-name", foreground=Default.get("font_color_func", '#FFF95C'), font=Default.basic_font) #To-Do
 
-    @staticmethod
-    def highligting(text: Type['CustomText'], root: Type['tk.Tk'], MainWindow: Type['MainWindow']) -> None:
-        '''Junk method needs to be optymalized only for actual fragment on actual file and already copied file
-        Still good as first call for file to catch tags'''
-        refresh_rate = 250
+    #~ @staticmethod
+    #~ def highligting(text: Type['ProgrammingText'], root: Type['tk.Tk'], MainWindow: Type['MainWindow']) -> None:
+        #~ '''Junk method needs to be optymalized only for actual fragment on actual file and already copied file
+        #~ Still good as first call for file to catch tags'''
+        #~ refresh_rate = 500
         ###> Patterns <### 
-        #~ chain_pattern = r"\s+(" + r")|\s+(".join(iter(Default.chain_gramar)) + r")"
-        chain_pattern = r"|".join(iter(Default.chain_gramar))
-        #~ builtin_pattern = r"(\s|\.)+(" + r")(\s|\(|\.)|(\s|\.)+(".join(iter(Default.builtin_func)) + r")(\s|\(|\.)"
-        builtin_pattern = r"|".join(iter(Default.builtin_func))
+        #~ chain_pattern_detailed = r"\s+(" + r")|\s+(".join(iter(Default.chain_gramar)) + r")"
+        #~ chain_pattern = r"|".join(iter(Default.chain_gramar))
+        #~ builtin_pattern_detailed = r"(\s|\.)+(" + r")(\s|\(|\.)|(\s|\.)+(".join(iter(Default.builtin_func)) + r")(\s|\(|\.)"
+        #~ builtin_pattern = r"|".join(iter(Default.builtin_func))
 
-        digits_pattern = r"\d|\d\.\d"
+        #~ digits_pattern = r"\d|\d\.\d"
         
-        strings_pattern = r"(\"(.|\s)*\")|(\'(.|\s)*\')"
-        #~ multi_strings_pattern = r"\d|\d\.\d"
+        #~ strings_pattern = r"(\"(.|\s)*\")|(\'(.|\s)*\')"
+        ##~ multi_strings_pattern = r"\d|\d\.\d"
         
-        MainWindow.add_to_mainloop(root, time=refresh_rate,
-                                   func=lambda: [text.tag_remove(tag, "1.0", "end") for tag in text.tag_names()])
-        logging.debug(f"Running mainloop font_normal per {refresh_rate/1000}s")
-        MainWindow.add_to_mainloop(root, time=refresh_rate,
-                                   func=lambda: text.highlight_pattern(pattern=chain_pattern,
-                                                                       tag="chain_grammar", regexp=True))
-        logging.debug(f"Running mainloop font_chain per {refresh_rate/1000}s")
-        MainWindow.add_to_mainloop(root, time=refresh_rate,
-                                   func=lambda: text.highlight_pattern(pattern=builtin_pattern,
-                                                                       tag="builtin_func", regexp=True))
-        logging.debug(f"Running mainloop font_builtin per {refresh_rate/1000}s")
-        MainWindow.add_to_mainloop(root, time=refresh_rate,
-                                   func=lambda: text.highlight_pattern(pattern=digits_pattern,
-                                                                       tag="digits", regexp=True))
-        logging.debug(f"Running mainloop font_digits per {refresh_rate/1000}s")
-        MainWindow.add_to_mainloop(root, time=refresh_rate,
-                                   func=lambda: text.highlight_pattern(pattern=strings_pattern,
-                                                                       tag="one-line-string", regexp=True))
-        logging.debug(f"Running mainloop font_digits per {refresh_rate/1000}s")
+        ##~ MainWindow.add_to_mainloop(root, time=refresh_rate,
+                                   #~ func=lambda: [text.tag_remove(tag, "1.0", "end") for tag in text.tag_names()])
+        ##~ logging.debug(f"Running mainloop font_normal per {refresh_rate/1000}s")
+        #~ MainWindow.add_to_mainloop(root, time=refresh_rate,
+                                   #~ func=lambda: text.highlight_pattern(pattern=chain_pattern,
+                                                                       #~ tag="chain_grammar", regexp=True))
+        #~ logging.debug(f"Running mainloop font_chain per {refresh_rate/1000}s")
+        #~ MainWindow.add_to_mainloop(root, time=refresh_rate,
+                                   #~ func=lambda: text.highlight_pattern(pattern=builtin_pattern,
+                                                                       #~ tag="builtin_func", regexp=True))
+        #~ logging.debug(f"Running mainloop font_builtin per {refresh_rate/1000}s")
+        #~ MainWindow.add_to_mainloop(root, time=refresh_rate,
+                                   #~ func=lambda: text.highlight_pattern(pattern=digits_pattern,
+                                                                       #~ tag="digits", regexp=True))
+        #~ logging.debug(f"Running mainloop font_digits per {refresh_rate/1000}s")
+        #~ MainWindow.add_to_mainloop(root, time=refresh_rate,
+                                   #~ func=lambda: text.highlight_pattern(pattern=strings_pattern,
+                                                                       #~ tag="one-line-string", regexp=True))
+        #~ logging.debug(f"Running mainloop font_digits per {refresh_rate/1000}s")
+        
+        #~ MainWindow.add_to_mainloop(root, time=refresh_rate*20,
+                                   #~ func=lambda: [text.tag_remove(tag, "1.0", "end") for tag in text.tag_names()])
+        #~ logging.debug(f"Running mainloop font_normal per {refresh_rate/50}s")
+        #~ MainWindow.add_to_mainloop(root, time=refresh_rate*20,
+                                   #~ func=lambda: text.highlight_pattern(pattern=chain_pattern_detailed,
+                                                                       #~ tag="chain_grammar", regexp=True))
+        #~ logging.debug(f"Running mainloop font_chain_precise per {refresh_rate/50}s")
+        #~ MainWindow.add_to_mainloop(root, time=refresh_rate*20,
+                                   #~ func=lambda: text.highlight_pattern(pattern=builtin_pattern_detailed,
+                                                                       #~ tag="builtin_func", regexp=True))
+        #~ logging.debug(f"Running mainloop font_builtin_precise per {refresh_rate/50}s")
+        #~ MainWindow.add_to_mainloop(root, time=refresh_rate*20,
+                                   #~ func=lambda: text.highlight_pattern(pattern=digits_pattern,
+                                                                       #~ tag="digits", regexp=True))
+        #~ MainWindow.add_to_mainloop(root, time=refresh_rate*20,
+                                   #~ func=lambda: text.highlight_pattern(pattern=strings_pattern,
+                                                                       #~ tag="one-line-string", regexp=True))
+
+    @staticmethod
+    def lazy_highligting(text: Type['ProgrammingText']) -> None:
+        pass
 
 class Default():
     #Settings
