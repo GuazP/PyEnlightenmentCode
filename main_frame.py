@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+from argparse import ArgumentParser
+
 ## MainFrame Tk namespace
 import tkinter as tk
 from tkinter import ttk
@@ -157,7 +160,7 @@ class MainFrameErrorCatcher():
             
     @staticmethod
     def general_undefined_error_logging(ex):
-        logging.error(f"{{{}} Undefined error occured.")
+        logging.error("{Undefined error occured.")
         logging.error(f"Type: {type(ex).__name__}")
         logging.error(f"Reason: {str(ex)}")
         error_in_file = ex.__traceback__.tb_frame.f_code.co_filename[:-3]
@@ -169,14 +172,46 @@ class MainFrameErrorCatcher():
             error_in_line = error_stack_item.tb_lineno
             logging.error(f"During: {error_in_file} at line: {error_in_line}")
             error_stack_item = error_stack_item.tb_next
+        logging.error("}")
 
 def mainloop():
     root: 'tk.Tk()' = tk.Tk()
-    tkinter.CallWrapper = MainFrameErrorCatcher
+    tk.CallWrapper = MainFrameErrorCatcher
     MainWindow(root).pack(side="top", fill="both", expand=True)
     root.mainloop()
 
+
+def argparse_logging_settings():
+    parser.add_argument("-q", "--quiet", help="set logging to ERROR (default)",
+                        action="store_const", dest="loglevel",
+                        const=logging.ERROR, default=logging.ERROR)
+    parser.add_argument("-i", "--info", help="set logging to INFO",
+                        action="store_const", dest="loglevel",
+                        const=logging.INFO, default=logging.ERROR)
+    parser.add_argument("-d", "--debug", help="set logging to DEBUG",
+                        action="store_const", dest="loglevel",
+                        const=logging.DEBUG, default=logging.ERROR)
+
+def argparse_program_settings():
+    pass #To-Do
+
+def argparse_validate():
+    args = parser.parse_args()
+    return args
+
+#Debugging calling
 if __name__ == "__main__" and __debug__:
     logging.basicConfig(level=logging.DEBUG,
                         format='%(name)s - %(levelname)-8s %(message)s')
+    mainloop()
+
+#Binary calling
+if __name__ == "__main__" and not __debug__:
+    parser = ArgumentParser(description=MainWindow.__doc__)
+    argparse_logging_settings()
+    argparse_program_settings()
+
+    args = argparse_validate()
+    logging.basicConfig(level=args.loglevel,
+                        format=' %(name)s - %(levelname)-8s %(message)s')
     mainloop()

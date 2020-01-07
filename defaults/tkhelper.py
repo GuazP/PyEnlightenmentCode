@@ -103,16 +103,16 @@ class TkHelper():
     @staticmethod
     def remove_highlighting(text: Type['ProgrammingText']) -> None:
         if not text:
-            logging.error("Text widget is None instead TkHighlightningText type.")
+            logging.warning("Text widget is None instead TkHighlightningText type.")
             return None
         iter(text.tag_remove(tag, "1.0", "end") for tag in text.tag_names())
             
     @staticmethod
     def lazy_highligting(text: Type['ProgrammingText']) -> None:
         if not text:
-            logging.error("Text widget is None instead TkHighlightningText type.")
+            logging.warning("Text widget is None instead TkHighlightningText type.")
             return None
-        logging.debug("running lazy")
+        logging.debug("Lazy highlightning runs")
         chain_pattern_detailed: str = r"(^|\b)?(" + r"|".join(iter(Default.chain_gramar)) + r")(\s|:|;|\()"
         builtin_pattern_detailed: str = r"(\s)+(" + r"|".join(iter(Default.builtin_func)) + r")(\s|\(|\.)"
         digits_pattern: str = r"(^|\s|,|\()(\d+(\.\d+)?)($|\s|,|\)|;)"
@@ -127,7 +127,7 @@ class TkHelper():
         text.highlight_pattern(pattern=digits_pattern, tag="digits", regexp=True, exclude_first=True, exclude_last=True)
         text.highlight_pattern(pattern=strings_pattern, tag="one-line-string", regexp=True)
         text.highlight_pattern(pattern=comment_pattern, tag="comments", regexp=True)
-        pass
+        logging.debug("Lazy highlightning ends")
 
 class Default():
     #Settings
