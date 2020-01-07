@@ -6,10 +6,10 @@ class MenuBar():
     def __init__(self, _root: 'tk.Tk()', MainWindow: 'MainWindow'):
         self._root: 'tk.Tk()' = _root
         self.menubar: 'tk.Menu' = tk.Menu(_root)
-        self.filemenu: 'tk.Menu' = tk.Menu(self.menubar, tearoff=0)
-        self.editmenu: 'tk.Menu' = tk.Menu(self.menubar, tearoff=0)
-        self.toolmenu: 'tk.Menu' = tk.Menu(self.menubar, tearoff=0)
-        self.helpmenu: 'tk.Menu' = tk.Menu(self.menubar, tearoff=0)
+        self.filemenu: 'tk.Menu' = tk.Menu(_root, tearoff=0)
+        self.editmenu: 'tk.Menu' = tk.Menu(_root, tearoff=0)
+        self.toolmenu: 'tk.Menu' = tk.Menu(_root, tearoff=0)
+        self.helpmenu: 'tk.Menu' = tk.Menu(_root, tearoff=0)
 
         #########> FILE MENU <#########
         self.filemenu.add_command(label = "New", command = MainWindow.new_file) 
@@ -18,7 +18,7 @@ class MenuBar():
         self.filemenu.add_command(label = "Save as ...", command = lambda: MainWindow.save_file(True)) 
         self.filemenu.add_separator()
         self.filemenu.add_command(label = "Exit", command = lambda: MainWindow.exit_(self._root)) 
-        self.menubar.add_cascade(label = "File") 
+        self.menubar.add_cascade(label = "File", menu = self.filemenu) 
 
         #########> EDIT MENU <#########
         self.editmenu.add_command(label = "Settings", command = MainWindow.configure_settings)

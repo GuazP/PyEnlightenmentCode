@@ -9,14 +9,22 @@ run_command = lambda shell_string: subprocess.run(shell_string, shell=True, univ
 
 class Command():
     #Settings
+    optimizer = " " if False else " -OO " #Set __debug__ flag to False statement instead of deafult True || asserts are removed from bytecode || docstrings removed from binary 
     exec_name = "PyEnlightenmentCode"
-    compiler = "pyinstaller"
+    py_version = "python3.6"
+    compiler = f"{py_version}{optimizer}-m PyInstaller"
     main = "main_frame.py"
-    flags = " ".join(iter(["--onefile", "--hidden-import=tkinter"]))
+    flags = " ".join(iter([ "--onefile", #Make only one binary independent file, which include dependencies.
+                            "--hidden-import=tkinter", #Make hidden import for tkinter (there is some issue with normal dependency with tkinter, there is a workaround) 
+                            ]))
     dependencies = ["doc/:doc/"]
     added_data = "--add-data " + " --add-data ".join(iter(dependencies))
     running_flags = ["--quiet"]
     running_flags = "" + " ".join(iter(running_flags))
+
+    @classmethod
+    def clean_cache_files(cls):
+        return "rm -rfv ./*.pyc && rm -rfv ./*__pycache__"
 
     @classmethod
     def make_binary(cls):
@@ -58,16 +66,20 @@ class Command():
                                 
 
 def main(args):
+    #Clean python cache
+    run_command(Command.clean_cache_files())
+    
     #Compile program with dependencies
     run_command(Command.make_binary())
 
     #Cleanup and extract binary
     run_command(Command.extract_and_cleanup())
 
-    #Run if flag is set to True
     if args.run_and_delete:
+        #Run if flag is set to True, and delete binary after quit of the program (For testing pruposes)
         run_command(Command.run_and_remove_binary())
     elif args.run:
+        #Run if flag is set to True
         run_command(Command.run_binary())
 
 if __name__ == "__main__":

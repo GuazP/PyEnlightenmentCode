@@ -15,6 +15,7 @@ from typing import Callable
 ## MainFrame libraries used
 import logging
 import os
+import sys
 
 ## MainFrame using
 from components.file_frame import EditorManager
@@ -116,6 +117,7 @@ class MainWindow(ttk.Frame):
         TkHelper.save_position(root)
         Default.save()
         root.destroy()
+        sys.exit(0)
 
     @classmethod
     def new_file(cls: 'MainWindow') -> None:
@@ -179,7 +181,6 @@ def mainloop():
     tk.CallWrapper = MainFrameErrorCatcher
     MainWindow(root).pack(side="top", fill="both", expand=True)
     root.mainloop()
-
 
 def argparse_logging_settings():
     parser.add_argument("-q", "--quiet", help="set logging to ERROR (default)",
