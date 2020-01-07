@@ -1,13 +1,15 @@
 import os
 import sys
-import typing
+
 import tkinter as tk
-#~ from tkinter.ttk import Font
+
+import typing
 from typing import Type
 from typing import List
+from typing import Dict
+
 import logging
 import re
-
 import json
 
 
@@ -18,23 +20,23 @@ class TkHelper():
         root.title(title)
         
         #Screen size
-        screen_width = root.winfo_screenwidth()
-        screen_height = root.winfo_screenheight()
+        screen_width: str = root.winfo_screenwidth()
+        screen_height: str = root.winfo_screenheight()
         logging.debug(f"Readed screen resolution is {screen_width}x{screen_height}")
 
         #Windowplacement
         root.overrideredirect(0)
-        min_x = int(root.winfo_screenwidth()/8)
-        min_y = int(root.winfo_screenheight()/8)
+        min_x: int = int(root.winfo_screenwidth()/8)
+        min_y: int = int(root.winfo_screenheight()/8)
         
-        x = int(Default.get("x", screen_width))
-        y = int(Default.get("y", screen_height))
+        x: int = int(Default.get("x", screen_width))
+        y: int = int(Default.get("y", screen_height))
         
-        wind_x = Default.get("wind_x", int((screen_width-x)/2))
+        wind_x: int = Default.get("wind_x", int((screen_width-x)/2))
         if wind_x < 0 or wind_x > screen_width-10:
             wind_x = int((screen_width-x)/2)
         Default.set("wind_x", wind_x)
-        wind_y = Default.get("wind_y", int((screen_height-y)/2))
+        wind_y: int = Default.get("wind_y", int((screen_height-y)/2))
         if wind_y < 0 or wind_y > screen_height-10:
             wind_y = int((screen_height-y)/2)
         Default.set("wind_y", wind_y)
@@ -47,8 +49,7 @@ class TkHelper():
         root.focus_set()
 
     @staticmethod
-    def configure_visual(master: Type['tk.Tk'], darkmode: bool = True,
-                         *args: List[str]) -> None:
+    def configure_visual(master: Type['tk.Tk'], darkmode: bool = True, *args: List[str]) -> None:
         if darkmode:
             for name in args:
                 master.option_add(f"*{name}.background", "black")
@@ -85,92 +86,64 @@ class TkHelper():
         Default.set("wind_y", wind_y)
 
     @staticmethod
-    def config_tags(text: Type['ProgrammingText']) -> None:
-        prefix = "d" if Default.get("darkmode") else "b"
-        normal_font = Default.get("basic_font")
-        bolded_font = Default.get("highlight_font")
-        text.tag_config("normal", foreground=Default.get(prefix+"font_color_normal", '#FFFFFF'), font=normal_font)
-        text.tag_config("chain_grammar", foreground=Default.get(prefix+"font_color_chain", '#FFFF4E'), font=bolded_font)
-        for cg in Default.chain_gramar:
-            text.highlight_pattern(cg, "chain_grammar")
-        text.tag_config("builtin_func", foreground=Default.get(prefix+"font_color_builtin", '#4EE6FF'), font=bolded_font)
-        for bf in Default.builtin_func:
-            text.highlight_pattern(bf, "builtin_func")
-        text.tag_config("digits", foreground=Default.get(prefix+"font_color_digits", '#D0762D'), font=bolded_font)
-        text.tag_config("one-line-string", foreground=Default.get(prefix+"font_color_string", '#001DA6'), font=normal_font)
-        text.tag_config("multi-line-string", foreground=Default.get(prefix+"font_color_mstring", '#B42A63'), font=normal_font)
+    def config_tags(programming: Type['ProgrammingText']) -> None:
+        prefix: str = "d" if Default.get("darkmode") else "b"
+        normal_font: str = Default.get("basic_font")
+        bolded_font: str = Default.get("highlight_font")
+        programming.text.tag_config("normal", foreground=Default.get(prefix+"font_color_normal", '#FFFFFF'), font=normal_font)
+        programming.text.tag_config("chain_grammar", foreground=Default.get(prefix+"font_color_chain", '#FFFF4E'), font=bolded_font)
+        programming.text.tag_config("builtin_func", foreground=Default.get(prefix+"font_color_builtin", '#4EE6FF'), font=bolded_font)
+        programming.text.tag_config("digits", foreground=Default.get(prefix+"font_color_digits", '#D0762D'), font=bolded_font)
+        programming.text.tag_config("one-line-string", foreground=Default.get(prefix+"font_color_string", '#001DA6'), font=normal_font)
+        programming.text.tag_config("multi-line-string", foreground=Default.get(prefix+"font_color_mstring", '#B42A63'), font=normal_font)
         #~ text.tag_config("class-name", foreground=Default.get("font_color_class", '#FFF500'), font=Default.basic_font) #To-Do
         #~ text.tag_config("func-name", foreground=Default.get("font_color_func", '#FFF95C'), font=Default.basic_font) #To-Do
-
-    #~ @staticmethod
-    #~ def highligting(text: Type['ProgrammingText'], root: Type['tk.Tk'], MainWindow: Type['MainWindow']) -> None:
-        #~ '''Junk method needs to be optymalized only for actual fragment on actual file and already copied file
-        #~ Still good as first call for file to catch tags'''
-        #~ refresh_rate = 500
-        ###> Patterns <### 
-        #~ chain_pattern_detailed = r"\s+(" + r")|\s+(".join(iter(Default.chain_gramar)) + r")"
-        #~ chain_pattern = r"|".join(iter(Default.chain_gramar))
-        #~ builtin_pattern_detailed = r"(\s|\.)+(" + r")(\s|\(|\.)|(\s|\.)+(".join(iter(Default.builtin_func)) + r")(\s|\(|\.)"
-        #~ builtin_pattern = r"|".join(iter(Default.builtin_func))
-
-        #~ digits_pattern = r"\d|\d\.\d"
-        
-        #~ strings_pattern = r"(\"(.|\s)*\")|(\'(.|\s)*\')"
-        ##~ multi_strings_pattern = r"\d|\d\.\d"
-        
-        ##~ MainWindow.add_to_mainloop(root, time=refresh_rate,
-                                   #~ func=lambda: [text.tag_remove(tag, "1.0", "end") for tag in text.tag_names()])
-        ##~ logging.debug(f"Running mainloop font_normal per {refresh_rate/1000}s")
-        #~ MainWindow.add_to_mainloop(root, time=refresh_rate,
-                                   #~ func=lambda: text.highlight_pattern(pattern=chain_pattern,
-                                                                       #~ tag="chain_grammar", regexp=True))
-        #~ logging.debug(f"Running mainloop font_chain per {refresh_rate/1000}s")
-        #~ MainWindow.add_to_mainloop(root, time=refresh_rate,
-                                   #~ func=lambda: text.highlight_pattern(pattern=builtin_pattern,
-                                                                       #~ tag="builtin_func", regexp=True))
-        #~ logging.debug(f"Running mainloop font_builtin per {refresh_rate/1000}s")
-        #~ MainWindow.add_to_mainloop(root, time=refresh_rate,
-                                   #~ func=lambda: text.highlight_pattern(pattern=digits_pattern,
-                                                                       #~ tag="digits", regexp=True))
-        #~ logging.debug(f"Running mainloop font_digits per {refresh_rate/1000}s")
-        #~ MainWindow.add_to_mainloop(root, time=refresh_rate,
-                                   #~ func=lambda: text.highlight_pattern(pattern=strings_pattern,
-                                                                       #~ tag="one-line-string", regexp=True))
-        #~ logging.debug(f"Running mainloop font_digits per {refresh_rate/1000}s")
-        
-        #~ MainWindow.add_to_mainloop(root, time=refresh_rate*20,
-                                   #~ func=lambda: [text.tag_remove(tag, "1.0", "end") for tag in text.tag_names()])
-        #~ logging.debug(f"Running mainloop font_normal per {refresh_rate/50}s")
-        #~ MainWindow.add_to_mainloop(root, time=refresh_rate*20,
-                                   #~ func=lambda: text.highlight_pattern(pattern=chain_pattern_detailed,
-                                                                       #~ tag="chain_grammar", regexp=True))
-        #~ logging.debug(f"Running mainloop font_chain_precise per {refresh_rate/50}s")
-        #~ MainWindow.add_to_mainloop(root, time=refresh_rate*20,
-                                   #~ func=lambda: text.highlight_pattern(pattern=builtin_pattern_detailed,
-                                                                       #~ tag="builtin_func", regexp=True))
-        #~ logging.debug(f"Running mainloop font_builtin_precise per {refresh_rate/50}s")
-        #~ MainWindow.add_to_mainloop(root, time=refresh_rate*20,
-                                   #~ func=lambda: text.highlight_pattern(pattern=digits_pattern,
-                                                                       #~ tag="digits", regexp=True))
-        #~ MainWindow.add_to_mainloop(root, time=refresh_rate*20,
-                                   #~ func=lambda: text.highlight_pattern(pattern=strings_pattern,
-                                                                       #~ tag="one-line-string", regexp=True))
+        programming.text.tag_config("comments", foreground=Default.get(prefix+"font_color_comment", '#001DA6'), font=normal_font)
 
     @staticmethod
+    def remove_highlighting(text: Type['ProgrammingText']) -> None:
+        if not text:
+            logging.error("Text widget is None instead TkHighlightningText type.")
+            return None
+        iter(text.tag_remove(tag, "1.0", "end") for tag in text.tag_names())
+            
+    @staticmethod
     def lazy_highligting(text: Type['ProgrammingText']) -> None:
+        if not text:
+            logging.error("Text widget is None instead TkHighlightningText type.")
+            return None
+        logging.debug("running lazy")
+        chain_pattern_detailed: str = r"(^|\b)?(" + r"|".join(iter(Default.chain_gramar)) + r")(\s|:|;|\()"
+        builtin_pattern_detailed: str = r"(\s)+(" + r"|".join(iter(Default.builtin_func)) + r")(\s|\(|\.)"
+        digits_pattern: str = r"(^|\s|,|\()(\d+(\.\d+)?)($|\s|,|\)|;)"
+        strings_pattern: str = r"(r|f)?(\"(.|\s)*\")|(\'(.|\s)*\')"
+        comment_pattern: str = r"#.*$"
+        
+        for tag in text.tag_names():
+            text.tag_remove(tag, "1.0", "end")
+
+        text.highlight_pattern(pattern=chain_pattern_detailed, tag="chain_grammar", regexp=True, exclude_last=True)
+        text.highlight_pattern(pattern=builtin_pattern_detailed, tag="builtin_func", regexp=True, exclude_first=True, exclude_last=True)
+        text.highlight_pattern(pattern=digits_pattern, tag="digits", regexp=True, exclude_first=True, exclude_last=True)
+        text.highlight_pattern(pattern=strings_pattern, tag="one-line-string", regexp=True)
+        text.highlight_pattern(pattern=comment_pattern, tag="comments", regexp=True)
         pass
 
 class Default():
     #Settings
-    PATH = os.path.join(os.path.expanduser("~"), ".config", "PyEnlightenmentCode")
-    CONFIG_PATH = os.path.join(os.path.expanduser("~"), ".config", "PyEnlightenmentCode", ".config.json")
-    defaults = {"execute": "python3",                           #Interpreter
+    PATH: str = os.path.join(os.path.expanduser("~"), ".config", "PyEnlightenmentCode")
+    CONFIG_PATH: str = os.path.join(os.path.expanduser("~"), ".config", "PyEnlightenmentCode", ".config.json")
+    #Basic settings
+    defaults: Dict[str, object] = {
+                "execute": "python3",                           #Interpreter
                 "debug": "python3 -m pdb",                      #Debuger
                 "binary": "pyinstaller",                        #'Compiler'
                 "basic_font": "monospace 10",                   #Basic Font
                 "highlight_font": "monospace 10 bold",          #Bolded Font
                 "darkmode": True                                #General color mode
                 }
+
+    #Fonts color settings
     defaults.update({
                 "dfont_color_normal": '#FFFFFF',                #Dark normal color
                 "bfont_color_normal": '#000000',                #Bright normal color
@@ -183,32 +156,36 @@ class Default():
                 "dfont_color_string": '#001DA6',                #Dark string color
                 "bfont_color_string": '#5D3A1E',                #Bright string color
                 "dfont_color_mstring": '#B42A63',               #Dark multiline string color
-                "bfont_color_mstring": '#4BD59C'                #Bright multiline string color
+                "bfont_color_mstring": '#4BD59C',               #Bright multiline string color
+                "dfont_color_comment": '#7CFFF7',               #Dark comments color
+                "bfont_color_comment": '#6D2E00'                #Bright comments color
                 })
 
     #Grammar
-    chain_gramar = ['False', 'class', 'finally', 'is', 'return',
-                    'None', 'continue', 'for', 'lambda', 'try',
-                    'True', 'def', 'from', 'nonlocal', 'while',
-                    'and', 'del', 'global', 'not', 'with',
-                    'as', 'elif', 'if', 'or', 'yield',
-                    'assert', 'else', 'import', 'pass',
-                    'break', 'except', 'in', 'raise']
-    builtin_func = ['abs()', 'delattr', 'hash', 'memoryview', 'set',
-                    'all', 'dict', 'help', 'min', 'setattr', 'any',
-                    'dir', 'hex', 'next', 'slice', 'ascii', 'divmod',
-                    'id', 'object', 'sorted', 'bin', 'enumerate', 'input',
-                    'oct', 'staticmethod', 'bool', 'eval', 'int', 'open',
-                    'str', 'breakpoint', 'isinstance', 'ord', 'sum',
-                    'bytearray', 'filter', 'issubclass', 'pow', 'super',
-                    'bytes', 'float', 'iter', 'print', 'tuple', 'callable',
-                    'format', 'len', 'property', 'type', 'chr', 'frozenset',
-                    'list', 'range', 'vars', 'classmethod', 'getattr', 'locals',
-                    'repr', 'zip', 'compile', 'globals', 'map', 'reversed',
-                    '__import__', 'complex', 'hasattr', 'max', 'round']
-    strings = ['\'', '\"']
-    func_declarations = []
-    class_declarations = []
+    chain_gramar: List[str] = [
+                'False', 'class', 'finally', 'is', 'return',
+                'None', 'continue', 'for', 'lambda', 'try',
+                'True', 'def', 'from', 'nonlocal', 'while',
+                'and', 'del', 'global', 'not', 'with',
+                'as', 'elif', 'if', 'or', 'yield',
+                'assert', 'else', 'import', 'pass',
+                'break', 'except', 'in', 'raise']
+    builtin_func: List[str] = [
+                'abs', 'delattr', 'hash', 'memoryview', 'set',
+                'all', 'dict', 'help', 'min', 'setattr', 'any',
+                'dir', 'hex', 'next', 'slice', 'ascii', 'divmod',
+                'id', 'object', 'sorted', 'bin', 'enumerate', 'input',
+                'oct', 'staticmethod', 'bool', 'eval', 'int', 'open',
+                'str', 'breakpoint', 'isinstance', 'ord', 'sum',
+                'bytearray', 'filter', 'issubclass', 'pow', 'super',
+                'bytes', 'float', 'iter', 'print', 'tuple', 'callable',
+                'format', 'len', 'property', 'type', 'chr', 'frozenset',
+                'list', 'range', 'vars', 'classmethod', 'getattr', 'locals',
+                'repr', 'zip', 'compile', 'globals', 'map', 'reversed',
+                '__import__', 'complex', 'hasattr', 'max', 'round']
+    strings: List[str] = ['\'', '\"']
+    func_declarations: str = []
+    class_declarations: str = []
 
     """Default config for MainFrame object, to separate code and store data"""
     def __init__(self: Type['Default'], parent: object) -> None:
@@ -232,15 +209,14 @@ class Default():
         return cls.defaults.get(attr, default)
 
     @classmethod
-    def set(cls: Type['Default'], attr: str, value: object,
-            alternative: object = None) -> None:
+    def set(cls: Type['Default'], attr: str, value: object, alternative: object = None) -> None:
         cls.defaults[attr] = value if not (value is None) else alternative
         logging.debug(f"`{attr}` is set to `{cls.defaults[attr]}` in Default")
 
     @classmethod
     def save(cls: Type['Default']) -> None:
-        file_path = Default.CONFIG_PATH
-        path = Default.PATH
+        file_path: str = Default.CONFIG_PATH
+        path: str = Default.PATH
         if not os.path.exists(path):
             logging.debug(f"Creating path {path}.")
             os.makedirs(path)
@@ -250,8 +226,8 @@ class Default():
 
     @classmethod
     def load(cls: Type['Default']) -> Type['Default']:
-        file_path = Default.CONFIG_PATH
-        path = Default.PATH
+        file_path: str = Default.CONFIG_PATH
+        path: str = Default.PATH
         if not os.path.exists(path):
             logging.debug(f"Creating path {path}.")
             os.makedirs(path)
@@ -259,7 +235,7 @@ class Default():
             logging.debug(f"Configs found, loading binary data")
             with open(file_path, "r") as configs:
                 defaults = json.loads(configs.read())
-            cls.defaults = defaults
+            cls.defaults.update(defaults)
         else:
             logging.debug(f"Configs not found, loading Default as configs.")
             Default.save()

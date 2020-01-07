@@ -1,5 +1,6 @@
 ## MainFrame Tk namespace
 import tkinter as tk
+from tkinter import ttk
 from tkinter import filedialog
 
 ## MainFrame typing namespace
@@ -21,7 +22,7 @@ from components.project_frame import ProjectManager
 ## MainFrame defaults and helper
 from defaults.tkhelper import Default, TkHelper
 
-class MainWindow(tk.Frame):
+class MainWindow(ttk.Frame):
     __instance: 'MainWindow' = None
     _root: 'tk.Frame' = None
     _menubar: 'MenuBar' = None
@@ -41,7 +42,7 @@ class MainWindow(tk.Frame):
 
     # Construct window.
     def __init__(self: 'MainWindow', root: 'tk.Tk', *args: tuple, **kwargs: dict) -> None:
-        tk.Frame.__init__(self, root, *args, **kwargs)
+        ttk.Frame.__init__(self, root, *args, **kwargs)
         self.pack(fill=tk.BOTH, expand=1)
 
         # Path to store information etc.
@@ -77,11 +78,11 @@ class MainWindow(tk.Frame):
         # Load stored previously data
         def load_last_data() -> List['FileFrame']:
             #ToDo load last opened files.
-            self._editor_frame = tk.Frame(root, padx=0, pady=0)
+            self._editor_frame = ttk.Frame(root)
             self._editor_manager = EditorManager(MainWindow, root, self._editor_frame) #ToDo
             TkHelper.configure_grid_x(self._editor_frame, col=10, weight=1)
             TkHelper.configure_grid_y(self._editor_frame, row=2, weight=1)
-            self._editor_frame.pack(side = tk.BOTTOM, fill = tk.BOTH, expand=True)
+            self._editor_frame.pack(fill = tk.BOTH, expand=True)
 
         self._root = root
 
@@ -93,7 +94,7 @@ class MainWindow(tk.Frame):
         top_menu_bar_setup()
         project_left_panel_setup()
         load_last_data()
-        
+
         root.protocol("WM_DELETE_WINDOW", lambda: MainWindow.exit_(self._root))
 
         #~ def update():
@@ -122,7 +123,7 @@ class MainWindow(tk.Frame):
     def load_file(cls: 'MainWindow') -> None:
         logging.debug("`MainWindow.load_file` called")
         selected_file = filedialog.askopenfilename(initialdir = os.path.expanduser("~"), title = "Select file", filetypes = (("python files","*.py"), ("all files", "*.*")))
-        print(selected_file)
+        logging.debug("selected file: {selected_file}")
         pass
 
     @classmethod
@@ -148,7 +149,7 @@ class MainFrameErrorCatcher():
         pass
 
 def mainloop():
-    root = tk.Tk()
+    root: 'tk.Tk()' = tk.Tk()
     MainWindow(root).pack(side="top", fill="both", expand=True)
     root.mainloop()
 

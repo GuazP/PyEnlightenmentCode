@@ -1,16 +1,19 @@
+import typing
+from typing import Dict
+
 import logging
 
 import tkinter as tk
 from tkinter import scrolledtext
 
 class BottomPanel():
-    def __init__(self, frame):
-        self.selector1 = tk.Button(frame, text="Editor Info")
+    def __init__(self, frame: 'tk.Frame'):
+        self.selector1: 'tk.Button' = tk.Button(frame, text="Editor Info")
         self.selector1.grid(row=0, column=0, sticky="snew")
-        self.text_area = scrolledtext.ScrolledText(frame, height=10)
-        self.text_handler = TextHandler(self.text_area)
+        self.text_area: 'scrolledtext.ScrolledText' = scrolledtext.ScrolledText(frame, height=10)
+        self.text_handler: 'TextHandler' = TextHandler(self.text_area)
         self.text_area.grid(row=0, column=1, rowspan = 3, columnspan=6, sticky="snew")
-        logger = logging.getLogger()
+        logger: 'logging' = logging.getLogger()
         logger.addHandler(self.text_handler)
 
     def show_logging_handler(self):
@@ -20,15 +23,32 @@ class BottomPanel():
         pass
 
 class TextHandler(logging.Handler):
+    tag_level: Dict[str, str] = {
+            "CRITICAL": "#0000FF",
+            "ERROR": "#FF0000",
+            "WARNING": "#AA1111",
+            "INFO": "#000000",
+            "DEBUG": "#00FF00",
+            "NOTSET": "#303030"}
+    
     def __init__(self, text):
         logging.Handler.__init__(self)
-        self.text = text
-
+        self.text: 'scrolledText.ScrolledText' = text
+        formatter: 'logging.Formatter' = logging.Formatter('%(name)s - %(levelname)-8s %(message)s')
+        self.setFormatter(formatter)
+        for tag, color in self.tag_level.items():
+            self.text.tag_config(tag, foreground=color)
+        
     def emit(self, record):
-        msg = self.format(record)
+        msg: str = self.format(record)
         def append():
-            self.text.configure(state='normal')
-            self.text.insert(tk.END, msg + '\n')
-            self.text.configure(state='disabled')
-            self.text.yview(tk.END)
+            for tag in self.tag_level:
+                if tag in msg:
+                    self.text.configure(state='normal')
+                    self.text.insert(tk.END, msg + '\n', tag)
+                    self.text.configure(state='disabled')
+                    self.text.yview(tk.END)
+                    break
+            else:
+                logging.error("Logging type unrecognized for {msg}")
         self.text.after(0, append)
