@@ -142,14 +142,37 @@ class MainWindow(ttk.Frame):
         pass
 
 class MainFrameErrorCatcher():
-    def __init__(self):
-        pass
+    def __init__(self, func, subst, widget):
+        self.func = func
+        self.subst = subst
+        self.widget = widget
 
-    def __call__(self, *args, **kwargs):
-        pass
+    def __call__(self, *args):
+        try:
+            if self.subst:
+                args = self.subst(*args)
+            return self.func(*args)
+        except Exception as ex:
+            MainFrameErrorCatcher.general_undefined_error_logging(ex)
+            
+    @staticmethod
+    def general_undefined_error_logging(ex):
+        logging.error(f"{{{}} Undefined error occured.")
+        logging.error(f"Type: {type(ex).__name__}")
+        logging.error(f"Reason: {str(ex)}")
+        error_in_file = ex.__traceback__.tb_frame.f_code.co_filename[:-3]
+        error_in_line = ex.__traceback__.tb_lineno
+        logging.error(f"In: {error_in_file} at line: {error_in_line}")
+        error_stack_item = ex.__traceback__.tb_next
+        while error_stack_item:
+            error_in_file = error_stack_item.tb_frame.f_code.co_filename[:-3]
+            error_in_line = error_stack_item.tb_lineno
+            logging.error(f"During: {error_in_file} at line: {error_in_line}")
+            error_stack_item = error_stack_item.tb_next
 
 def mainloop():
     root: 'tk.Tk()' = tk.Tk()
+    tkinter.CallWrapper = MainFrameErrorCatcher
     MainWindow(root).pack(side="top", fill="both", expand=True)
     root.mainloop()
 
