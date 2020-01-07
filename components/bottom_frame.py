@@ -4,11 +4,12 @@ from typing import Dict
 import logging
 
 import tkinter as tk
+from tkinter import ttk
 from tkinter import scrolledtext
 
 class BottomPanel():
-    def __init__(self, frame: 'tk.Frame'):
-        self.selector1: 'tk.Button' = tk.Button(frame, text="Editor Info")
+    def __init__(self, frame: 'ttk.Frame'):
+        self.selector1: 'ttk.Button' = ttk.Button(frame, text="Editor Info")
         self.selector1.grid(row=0, column=0, sticky="snew")
         self.text_area: 'scrolledtext.ScrolledText' = scrolledtext.ScrolledText(frame, height=10)
         self.text_handler: 'TextHandler' = TextHandler(self.text_area)

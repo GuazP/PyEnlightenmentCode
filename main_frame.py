@@ -5,6 +5,7 @@ from argparse import ArgumentParser
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
+from ttkthemes import ThemedTk
 
 ## MainFrame typing namespace
 import typing
@@ -28,7 +29,7 @@ from defaults.tkhelper import Default, TkHelper
 
 class MainWindow(ttk.Frame):
     __instance: 'MainWindow' = None
-    _root: 'tk.Frame' = None
+    _root: 'ttk.Frame' = None
     _menubar: 'MenuBar' = None
     _bottom_panel: 'BottomPanel' = None
     _project_manager: 'ProjectManager' = None
@@ -47,6 +48,7 @@ class MainWindow(ttk.Frame):
     # Construct window.
     def __init__(self: 'MainWindow', root: 'tk.Tk', *args: tuple, **kwargs: dict) -> None:
         ttk.Frame.__init__(self, root, *args, **kwargs)
+
         self.pack(fill=tk.BOTH, expand=1)
 
         # Path to store information etc.
@@ -59,7 +61,7 @@ class MainWindow(ttk.Frame):
         # Center (x,y), window title, default widget style etc.
         def general_window_setup() -> None:
             TkHelper.configure_window(self._root, title="PyEnlightenmentCode")
-            TkHelper.configure_visual(self._root, self.darkmode, "Button", "Text", "Label", "Frame", "tk")
+            TkHelper.configure_visual(self._root, self.darkmode, "Text")
             TkHelper.configure_font(self._root, self.font)
 
         # Setup menubar
@@ -68,7 +70,7 @@ class MainWindow(ttk.Frame):
 
         # Setup bottom panel with console view, terminal redirections, etc.
         def bottom_panel_setup() -> 'BottomPanel':
-            self._bottom_frame = tk.LabelFrame(root, padx=1, pady=1)
+            self._bottom_frame = ttk.LabelFrame(root)
             TkHelper.configure_grid_x(self._bottom_frame, col=0, weight=1)
             TkHelper.configure_grid_y(self._bottom_frame, row=2, weight=1)
             self._bottompanel = BottomPanel(self._bottom_frame) #ToDo
@@ -177,7 +179,7 @@ class MainFrameErrorCatcher():
         logging.error("}")
 
 def mainloop():
-    root: 'tk.Tk()' = tk.Tk()
+    root: 'tk.Tk()' = ThemedTk(theme="black")
     tk.CallWrapper = MainFrameErrorCatcher
     MainWindow(root).pack(side="top", fill="both", expand=True)
     root.mainloop()
