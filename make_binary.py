@@ -13,7 +13,6 @@ class Command():
     compiler = "pyinstaller"
     main = "main_frame.py"
     flags = " ".join(iter(["--onefile", "--hidden-import=tkinter"]))
-    # ~ flags = " ".join(iter([]))
     dependencies = ["doc/:doc/"]
     added_data = "--add-data " + " --add-data ".join(iter(dependencies))
     running_flags = ["--quiet"]
@@ -39,7 +38,8 @@ class Command():
                                f"&&",
                                f"rm -rfv",
                                f"dist/",
-                               f"build/"
+                               f"build/",
+                               f"{cls.exec_name}.spec"
                                ]))
 
     @classmethod
@@ -47,18 +47,27 @@ class Command():
         return " ".join(iter([ f"./{cls.exec_name}",
                                f"{cls.running_flags}"
                                ]))
+    @classmethod
+    def run_and_remove_binary(cls):
+        return " ".join(iter([ f"./{cls.exec_name}",
+                               f"{cls.running_flags}",
+                               f";",
+                               f"rm -rfv",
+                               f"./{cls.exec_name}"
+                               ]))
                                 
 
 def main(args):
     #Compile program with dependencies
-    # ~ print(Command.make_binary())
     run_command(Command.make_binary())
 
     #Cleanup and extract binary
     run_command(Command.extract_and_cleanup())
 
     #Run if flag is set to True
-    if args.run:
+    if args.run_and_delete:
+        run_command(Command.run_and_remove_binary())
+    elif args.run:
         run_command(Command.run_binary())
 
 if __name__ == "__main__":
@@ -66,6 +75,9 @@ if __name__ == "__main__":
     parser.add_argument("-r", "--run", dest="run",
                         default=False, action="store_true",
                         help="Run after compile")
+    parser.add_argument("-d", "--delete-after-run", dest="run_and_delete",
+                        default=False, action="store_true",
+                        help="Run after compile and delete when program ended")
 
     args = parser.parse_args()
     main(args)
