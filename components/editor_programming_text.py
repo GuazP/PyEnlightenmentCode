@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
+
 import typing
+
+import logging
 
 from defaults.tkhelper import TkHelper
 
@@ -13,20 +16,22 @@ class ProgrammingText(tk.Frame):
         if not self.active_text:
             self.active_text = self.text
         TkHelper.config_tags(self)
-        self.text.insert("end", "Select part of text and then click 'for'...\nfo")
+        self.text.insert("end", "for some range as example 'of' 9.75 examples in \"code\" # And there is a comment ;)")
+        self.text.insert("end", "\nline nr. "+"\nline nr. ".join(str(i) for i in range(2, 1000)))
         self.text.focus()
 
-        self.linenum: 'tk.Text' = tk.Text(self, font="monospace 10", width=3) #To-Do
+        self.linenum: 'tk.Text' = tk.Text(self, font="monospace 10", width=4) #To-Do
         self.linenum.tag_configure('line', justify='right') #To-Do
-        self.linenum.config(state="disabled")
-        
-        self.scroll: 'tk.Text' = ttk.Scrollbar(self, command=self.text.yview or self.linenum.yview)
-        self.text.configure(yscrollcommand=self.scroll.set)
-        self.linenum.configure(yscrollcommand=self.scroll.set)
+        self.linenum.insert("end", "\n".join(str(i) for i in range(1, 1000)))
+        self.linenum.config(state = "disabled")
 
-        self.scroll.pack(side=tk.RIGHT, fill=tk.Y)
-        self.linenum.pack(side=tk.LEFT, fill=tk.Y) #To-Do
-        self.text.pack(fill=tk.BOTH)
+        self.scroll: 'tk.Text' = ttk.Scrollbar(self, command = self.text.yview or self.linenum.yview)
+        self.text.configure(yscrollcommand = self.scroll.set)
+        self.linenum.configure(yscrollcommand = self.scroll.set)
+
+        self.scroll.pack(side = tk.RIGHT, fill = tk.Y)
+        self.linenum.pack(side = tk.LEFT, fill = tk.Y) #To-Do      
+        self.text.pack(side = tk.TOP, fill = tk.BOTH, expand = True)
         
         self.bind("<Visibility>", lambda event: ProgrammingText.change_active_text(self.text))
         
@@ -47,11 +52,13 @@ class TkHighligtningText(tk.Text):
         self.mark_set("sLimit", end)
 
         count: 'tk.IntVar' = tk.IntVar()
-        while True:
-            index: str = self.search(pattern, "mEnd","sLimit",
-                                     count=count, regexp=regexp)
-            if index == "": break
+        index: str = self.search(pattern, "mEnd","sLimit",
+                                 count=count, regexp=regexp)
+        while index:
+            logging.error(index)
             length = count.get() -1 if exclude_last else count.get()
             self.mark_set("mStart", f"{index}")
             self.mark_set("mEnd", f"{index}+{length}c")
             self.tag_add(tag, "mStart", "mEnd")
+            index: str = self.search(pattern, "mEnd","sLimit",
+                                     count=count, regexp=regexp)

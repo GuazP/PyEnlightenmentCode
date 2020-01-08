@@ -94,7 +94,7 @@ class TkHelper():
         programming.text.tag_config("chain_grammar", foreground=Default.get(prefix+"font_color_chain", '#FFFF4E'), font=bolded_font)
         programming.text.tag_config("builtin_func", foreground=Default.get(prefix+"font_color_builtin", '#4EE6FF'), font=bolded_font)
         programming.text.tag_config("digits", foreground=Default.get(prefix+"font_color_digits", '#D0762D'), font=bolded_font)
-        programming.text.tag_config("one-line-string", foreground=Default.get(prefix+"font_color_string", '#001DA6'), font=normal_font)
+        programming.text.tag_config("one-line-string", foreground=Default.get(prefix+"font_color_string", '#0026A1'), font=normal_font)
         programming.text.tag_config("multi-line-string", foreground=Default.get(prefix+"font_color_mstring", '#B42A63'), font=normal_font)
         #~ text.tag_config("class-name", foreground=Default.get("font_color_class", '#FFF500'), font=Default.basic_font) #To-Do
         #~ text.tag_config("func-name", foreground=Default.get("font_color_func", '#FFF95C'), font=Default.basic_font) #To-Do
@@ -109,22 +109,25 @@ class TkHelper():
             
     @staticmethod
     def lazy_highligting(text: Type['ProgrammingText']) -> None:
+        """This highlightning should select adjusted region (pasted, or line where comes insertion)"""
         if not text:
             logging.warning("Text widget is None instead TkHighlightningText type.")
             return None
         logging.debug("Lazy highlightning runs")
-        chain_pattern_detailed: str = r"(^|\b)?(" + r"|".join(iter(Default.chain_gramar)) + r")(\s|:|;|\()"
-        builtin_pattern_detailed: str = r"(\s)+(" + r"|".join(iter(Default.builtin_func)) + r")(\s|\(|\.)"
-        digits_pattern: str = r"(^|\s|,|\()(\d+(\.\d+)?)($|\s|,|\)|;)"
+        # Visualization https://www.debuggex.com/r/ | Testing https://regex101.com/
+        # Note: Tkinter regex engine don't support Lookbehind asserts...
+        chain_pattern_detailed: str = r"(^|\s)?(" + r"|".join(iter(Default.chain_gramar)) + r")(?=(\s|:|;|\())"
+        builtin_pattern_detailed: str = r"(\s)+(" + r"|".join(iter(Default.builtin_func)) + r")(?=(\s|\(|\.))"
+        digits_pattern: str = r"(^|\[|\s|,|\(|\]|\})(\d+(\.\d+)?)(?=($|\s|,|\)|\]|}|;))" #Best would be: (^|(?<=[\b\s,\)]))(\d+(\.\d+)?)(?=($|\s|,|\)|\]|}|;))
         strings_pattern: str = r"(r|f)?(\"(.|\s)*\")|(\'(.|\s)*\')"
         comment_pattern: str = r"#.*$"
         
         for tag in text.tag_names():
             text.tag_remove(tag, "1.0", "end")
 
-        text.highlight_pattern(pattern=chain_pattern_detailed, tag="chain_grammar", regexp=True, exclude_last=True)
-        text.highlight_pattern(pattern=builtin_pattern_detailed, tag="builtin_func", regexp=True, exclude_first=True, exclude_last=True)
-        text.highlight_pattern(pattern=digits_pattern, tag="digits", regexp=True, exclude_first=True, exclude_last=True)
+        text.highlight_pattern(pattern=chain_pattern_detailed, tag="chain_grammar", regexp=True)
+        text.highlight_pattern(pattern=builtin_pattern_detailed, tag="builtin_func", regexp=True)
+        text.highlight_pattern(pattern=digits_pattern, tag="digits", regexp=True)
         text.highlight_pattern(pattern=strings_pattern, tag="one-line-string", regexp=True)
         text.highlight_pattern(pattern=comment_pattern, tag="comments", regexp=True)
         logging.debug("Lazy highlightning ends")
@@ -153,7 +156,7 @@ class Default():
                 "bfont_color_builtin": '#B11900',               #Bright chain color
                 "dfont_color_digits": '#D0762D',                #Dark digits color
                 "bfont_color_digits": '#3F89D2',                #Bright digits color
-                "dfont_color_string": '#001DA6',                #Dark string color
+                "dfont_color_string": '#0026A1',                #Dark string color
                 "bfont_color_string": '#5D3A1E',                #Bright string color
                 "dfont_color_mstring": '#B42A63',               #Dark multiline string color
                 "bfont_color_mstring": '#4BD59C',               #Bright multiline string color

@@ -16,7 +16,7 @@ class EditorManager():
 
     def __init__(self, MainWindow: 'MainWindow', root: 'tk.Tk', frame: 'tk.Frame', *args: tuple, **kwargs: dict):
         self.editor_frame: 'ttk.Notebook' = ttk.Notebook(frame, *args, **kwargs)
-        self.editor_frame.pack(fill=tk.BOTH)
+        self.editor_frame.pack(side = tk.TOP, fill=tk.BOTH, expand = True)
         if not self.loaded_data:
             self.loaded_data = []
             self.loaded_data.append(FileContent(MainWindow, root, self.editor_frame, "New File"))
@@ -43,16 +43,16 @@ class FileContent():
         self.filename: str = filename
         
         self.frame: 'ttk.Notebook' = ttk.Notebook(notebook, *args, **kwargs)
-        self.frame.pack(fill=tk.BOTH)
+        self.frame.pack(side = tk.TOP, fill = tk.BOTH)
         
         self.programming_text: 'ProgrammingText' = ProgrammingText(self.frame)
-        self.programming_text.pack(fill=tk.BOTH)
+        self.programming_text.pack(fill = tk.BOTH, expand = True)
         #ToDo next frame with block scheme
         self.block_scheme: 'CodeBlock' = CodeBlock(self.frame)
-        self.block_scheme.pack(fill=tk.BOTH)
+        self.block_scheme.pack(fill = tk.BOTH, expand = True)
         #ToDo next frame with debuger scheme
         self.debugger_frame: 'Debugger' = Debugger(self.frame)
-        self.debugger_frame.pack(fill=tk.BOTH)
+        self.debugger_frame.pack(fill = tk.BOTH, expand = True)
 
         self.frame.add(self.programming_text, text="Code")
         self.frame.add(self.block_scheme, text="Block")

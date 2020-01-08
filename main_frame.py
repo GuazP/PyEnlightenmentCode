@@ -49,7 +49,8 @@ class MainWindow(ttk.Frame):
     def __init__(self: 'MainWindow', root: 'tk.Tk', *args: tuple, **kwargs: dict) -> None:
         ttk.Frame.__init__(self, root, *args, **kwargs)
 
-        self.pack(fill=tk.BOTH, expand=1)
+        # ~ self.grid()
+        self.pack(fill=tk.BOTH, expand=True)
 
         # Path to store information etc.
         def load_environment_config() -> None:
@@ -70,11 +71,11 @@ class MainWindow(ttk.Frame):
 
         # Setup bottom panel with console view, terminal redirections, etc.
         def bottom_panel_setup() -> 'BottomPanel':
-            self._bottom_frame = ttk.LabelFrame(root)
+            self._bottom_frame = ttk.LabelFrame(self)
             TkHelper.configure_grid_x(self._bottom_frame, col=0, weight=1)
-            TkHelper.configure_grid_y(self._bottom_frame, row=2, weight=1)
+            TkHelper.configure_grid_y(self._bottom_frame, row=7, weight=1)
             self._bottompanel = BottomPanel(self._bottom_frame) #ToDo
-            self._bottom_frame.pack(side = tk.BOTTOM, fill = tk.X, expand=False)
+            self._bottom_frame.pack(side = tk.BOTTOM, fill = tk.X, expand = False)
 
         # Left panel to navigate over files and methods
         def project_left_panel_setup() -> 'ProjectManager':
@@ -84,11 +85,9 @@ class MainWindow(ttk.Frame):
         # Load stored previously data
         def load_last_data() -> List['FileFrame']:
             #ToDo load last opened files.
-            self._editor_frame = ttk.Frame(root)
+            self._editor_frame = ttk.Frame(self)
             self._editor_manager = EditorManager(MainWindow, root, self._editor_frame) #ToDo
-            TkHelper.configure_grid_x(self._editor_frame, col=10, weight=1)
-            TkHelper.configure_grid_y(self._editor_frame, row=2, weight=1)
-            self._editor_frame.pack(fill = tk.BOTH, expand=True)
+            self._editor_frame.pack(side = tk.TOP, fill = tk.BOTH, expand = True)
 
         self._root = root
 
@@ -181,7 +180,8 @@ class MainFrameErrorCatcher():
 def mainloop():
     root: 'tk.Tk()' = ThemedTk(theme="black")
     tk.CallWrapper = MainFrameErrorCatcher
-    MainWindow(root).pack(side="top", fill="both", expand=True)
+    mw = MainWindow(root)
+    mw.pack(fill = tk.BOTH)
     root.mainloop()
 
 def argparse_logging_settings():
