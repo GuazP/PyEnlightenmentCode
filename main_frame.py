@@ -46,7 +46,7 @@ class MainWindow(ttk.Frame):
         return MainWindow.__instance
 
     # Construct window.
-    def __init__(self: 'MainWindow', root: 'tk.Tk', *args: tuple, **kwargs: dict) -> None:
+    def __init__(self: 'MainWindow', root: 'tk.Tk', config: 'Default', *args: tuple, **kwargs: dict) -> None:
         ttk.Frame.__init__(self, root, *args, **kwargs)
 
         # ~ self.grid()
@@ -54,7 +54,6 @@ class MainWindow(ttk.Frame):
 
         # Path to store information etc.
         def load_environment_config() -> None:
-            config = Default.load()
             Default(self).path: str = config.get("path")
             Default(self).darkmode: bool = config.get("darkmode")
             Default(self).font: str = config.get("font")
@@ -129,7 +128,7 @@ class MainWindow(ttk.Frame):
     def load_file(cls: 'MainWindow') -> None:
         logging.debug("`MainWindow.load_file` called")
         selected_file = filedialog.askopenfilename(initialdir = os.path.expanduser("~"), title = "Select file", filetypes = (("python files","*.py"), ("all files", "*.*")))
-        logging.debug("selected file: {selected_file}")
+        logging.debug(f"selected file: {selected_file}")
         pass
 
     @classmethod
@@ -178,9 +177,13 @@ class MainFrameErrorCatcher():
         logging.error("}")
 
 def mainloop():
-    root: 'tk.Tk()' = ThemedTk(theme="black")
+    configs: 'Default' = Default.load()
+    if configs.get("darkmode", True):
+        root: 'tk.Tk()' = ThemedTk(theme="black")
+    else:
+        root: 'tk.Tk()' = ThemedTk(theme="arc")
     tk.CallWrapper = MainFrameErrorCatcher
-    mw = MainWindow(root)
+    mw: 'MainWindow' = MainWindow(root, config=configs)
     mw.pack(fill = tk.BOTH)
     root.mainloop()
 

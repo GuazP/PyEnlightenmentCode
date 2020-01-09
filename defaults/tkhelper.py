@@ -108,12 +108,13 @@ class TkHelper():
         iter(text.tag_remove(tag, "1.0", "end") for tag in text.tag_names())
             
     @staticmethod
-    def lazy_highligting(text: Type['ProgrammingText']) -> None:
+    def lazy_highligting(text: Type['ProgrammingText'], typed: bool = True) -> None:
         """This highlightning should select adjusted region (pasted, or line where comes insertion)"""
         if not text:
             logging.warning("Text widget is None instead TkHighlightningText type.")
             return None
         logging.debug("Lazy highlightning runs")
+        # ~ logging.debug()
         # Visualization https://www.debuggex.com/r/ | Testing https://regex101.com/
         # Note: Tkinter regex engine don't support Lookbehind asserts...
         chain_pattern_detailed: str = r"(^|\s)?(" + r"|".join(iter(Default.chain_gramar)) + r")(?=(\s|:|;|\())"
@@ -121,15 +122,22 @@ class TkHelper():
         digits_pattern: str = r"(^|\[|\s|,|\(|\]|\})(\d+(\.\d+)?)(?=($|\s|,|\)|\]|}|;))" #Best would be: (^|(?<=[\b\s,\)]))(\d+(\.\d+)?)(?=($|\s|,|\)|\]|}|;))
         strings_pattern: str = r"(r|f)?(\"(.|\s)*\")|(\'(.|\s)*\')"
         comment_pattern: str = r"#.*$"
-        
-        for tag in text.tag_names():
-            text.tag_remove(tag, "1.0", "end")
 
-        text.highlight_pattern(pattern=chain_pattern_detailed, tag="chain_grammar", regexp=True)
-        text.highlight_pattern(pattern=builtin_pattern_detailed, tag="builtin_func", regexp=True)
-        text.highlight_pattern(pattern=digits_pattern, tag="digits", regexp=True)
-        text.highlight_pattern(pattern=strings_pattern, tag="one-line-string", regexp=True)
-        text.highlight_pattern(pattern=comment_pattern, tag="comments", regexp=True)
+        if typed:
+            line = int(text.index(tk.INSERT).split(".")[0])
+            startline = f"{line-5}.0" if line > 5 else f"1.0"
+            endingline = f"{line+5}.0"
+        else:
+            startline = "1.0"
+            endingline = "end"
+        for tag in text.tag_names():
+            text.tag_remove(tag, startline, endingline)
+
+        text.highlight_pattern(pattern=chain_pattern_detailed, start=startline, end=endingline, tag="chain_grammar", regexp=True)
+        text.highlight_pattern(pattern=builtin_pattern_detailed, start=startline, end=endingline, tag="builtin_func", regexp=True)
+        text.highlight_pattern(pattern=digits_pattern, start=startline, end=endingline, tag="digits", regexp=True)
+        text.highlight_pattern(pattern=strings_pattern, start=startline, end=endingline, tag="one-line-string", regexp=True)
+        text.highlight_pattern(pattern=comment_pattern, start=startline, end=endingline, tag="comments", regexp=True)
         logging.debug("Lazy highlightning ends")
 
 class Default():

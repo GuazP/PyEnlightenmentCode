@@ -6,6 +6,7 @@ import typing
 import logging
 
 from defaults.tkhelper import TkHelper
+from defaults.tkhelper import Default
 
 class ProgrammingText(tk.Frame):
     active_text: 'TkHighlightningText' = None
@@ -13,6 +14,8 @@ class ProgrammingText(tk.Frame):
         super().__init__(*args, **kwargs)
         
         self.text: 'TkHighlightningText' = TkHighligtningText(self, font="monospace 10")
+        if Default.get("darkmode", True):
+            self.text.config(insertbackground="white", exportselection=True)
         if not self.active_text:
             self.active_text = self.text
         TkHelper.config_tags(self)
@@ -39,12 +42,12 @@ class ProgrammingText(tk.Frame):
     def change_active_text(cls, programming_text):
         TkHelper.remove_highlighting(cls.active_text)
         cls.active_text = programming_text
-        TkHelper.lazy_highligting(cls.active_text)
+        TkHelper.lazy_highligting(cls.active_text, typed = False)
 
 class TkHighligtningText(tk.Text):
     def highlight_pattern(self, pattern: str, tag: str, regexp: bool = False,
                           start: str = "1.0", end: str = "end",
-                          exclude_first: bool = False, exclude_last: bool = False) -> None:
+                          exclude_first: bool = False) -> None:
         start: str = self.index(start)
         end: str = self.index(end)
         self.mark_set("mStart", start)
@@ -55,8 +58,7 @@ class TkHighligtningText(tk.Text):
         index: str = self.search(pattern, "mEnd","sLimit",
                                  count=count, regexp=regexp)
         while index:
-            logging.error(index)
-            length = count.get() -1 if exclude_last else count.get()
+            length = count.get()
             self.mark_set("mStart", f"{index}")
             self.mark_set("mEnd", f"{index}+{length}c")
             self.tag_add(tag, "mStart", "mEnd")
