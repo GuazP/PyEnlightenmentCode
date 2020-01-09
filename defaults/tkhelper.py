@@ -121,12 +121,13 @@ class TkHelper():
         builtin_pattern_detailed: str = r"(\s)+(" + r"|".join(iter(Default.builtin_func)) + r")(?=(\s|\(|\.))"
         digits_pattern: str = r"(^|\[|\s|,|\(|\]|\})(\d+(\.\d+)?)(?=($|\s|,|\)|\]|}|;))" #Best would be: (^|(?<=[\b\s,\)]))(\d+(\.\d+)?)(?=($|\s|,|\)|\]|}|;))
         strings_pattern: str = r"(r|f)?(\"(.|\s)*\")|(\'(.|\s)*\')"
+        mstrings_pattern: str = r"(r|f)?(\"{3}(.|\s)*\"{3})|(\'{3}(.|\s)*\'{3})"
         comment_pattern: str = r"#.*$"
 
         if typed:
             line = int(text.index(tk.INSERT).split(".")[0])
-            startline = f"{line-5}.0" if line > 5 else f"1.0"
-            endingline = f"{line+5}.0"
+            startline = f"{line-3}.0" if line > 3 else f"1.0"
+            endingline = f"{line+3}.0"
         else:
             startline = "1.0"
             endingline = "end"
