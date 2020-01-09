@@ -10,7 +10,7 @@ class CodeBlock(tk.Frame):
         super().__init__(*args, **kwargs)
         
         self.block: 'TkCodeCanvas' = TkCodeCanvas(self)
-        if not self.active_block:
+        if self.active_block is None:
             self.active_block = self.block
 
         self.bind("<Visibility>", lambda event: CodeBlock.change_active_block(self.block))

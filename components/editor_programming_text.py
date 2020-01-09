@@ -16,7 +16,7 @@ class ProgrammingText(tk.Frame):
         self.text: 'TkHighlightningText' = TkHighligtningText(self, font="monospace 10")
         if Default.get("darkmode", True):
             self.text.config(insertbackground="white", exportselection=True)
-        if not self.active_text:
+        if self.active_text is None:
             self.active_text = self.text
         TkHelper.config_tags(self)
         self.text.insert("end", "for some range as example 'of' 9.75 examples in \"code\" # And there is a comment ;)")

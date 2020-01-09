@@ -122,6 +122,7 @@ class MainWindow(ttk.Frame):
     @classmethod
     def new_file(cls: 'MainWindow') -> None:
         logging.debug("`MainWindow.new_file` called")
+        cls._editor_manager.new_file()
         pass
 
     @classmethod
