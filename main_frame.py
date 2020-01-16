@@ -85,7 +85,7 @@ class MainWindow(ttk.Frame):
         def load_last_data() -> List['FileFrame']:
             #ToDo load last opened files.
             self._editor_frame = ttk.Frame(self)
-            self._editor_manager = EditorManager(MainWindow, root, self._editor_frame) #ToDo
+            MainWindow._editor_manager = EditorManager(MainWindow, root, self._editor_frame) #ToDo
             self._editor_frame.pack(side = tk.TOP, fill = tk.BOTH, expand = True)
 
         self._root = root
@@ -122,6 +122,7 @@ class MainWindow(ttk.Frame):
     @classmethod
     def new_file(cls: 'MainWindow') -> None:
         logging.debug("`MainWindow.new_file` called")
+        logging.error(str(dir(cls._editor_manager)))
         cls._editor_manager.new_file()
         pass
 
