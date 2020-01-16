@@ -36,7 +36,10 @@ class ProgrammingText(tk.Frame):
         self.linenum.pack(side = tk.LEFT, fill = tk.Y) #To-Do      
         self.text.pack(side = tk.TOP, fill = tk.BOTH, expand = True)
         
+        self.bind('<<Selection>>', lambda event: ProgrammingText.select_range(self.text, "1.0", "end"))
         self.bind("<Visibility>", lambda event: ProgrammingText.change_active_text(self.text))
+        #~ self.bind("<<Modified>>", lambda event: TkHelper.lazy_highligting(ProgrammingText.active_text))
+        #~ self.bind("<KeyRelease>", lambda event: TkHelper.lazy_highligting(ProgrammingText.active_text))
         
     @classmethod
     def change_active_text(cls, programming_text):
@@ -64,3 +67,8 @@ class TkHighligtningText(tk.Text):
             self.tag_add(tag, "mStart", "mEnd")
             index: str = self.search(pattern, "mEnd","sLimit",
                                      count=count, regexp=regexp)
+                                     
+
+    @classmethod
+    def select_range(self, active: 'TkHighlightningText', start: str, end: str):
+        logging.debug(f"Selecting text from {start} to {end}")

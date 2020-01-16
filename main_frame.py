@@ -8,7 +8,7 @@ from tkinter import filedialog
 from ttkthemes import ThemedTk
 
 ## MainFrame typing namespace
-import typing
+import typing   
 from typing import Type
 from typing import List
 from typing import Callable
@@ -141,7 +141,7 @@ class MainWindow(ttk.Frame):
                                                          title = "Select where to save file",
                                                          filetypes = (("python files", "*.py"), ("all files", "*.*")))
         pass
-        
+
     @classmethod
     def configure_settings(cls: 'MainWindow') -> None:
         logging.debug("`MainWindow.configure_settings` called")

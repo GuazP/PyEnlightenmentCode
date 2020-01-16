@@ -22,11 +22,11 @@ class EditorManager():
             self.loaded_data.append(FileContent(MainWindow, root, self.editor_frame, "New File"))
             self.editor_frame.add(self.loaded_data[-1].frame, text = self.loaded_data[-1].filename)
 
-        root.bind("<KeyRelease>", lambda event: TkHelper.lazy_highligting(ProgrammingText.active_text))
+        root.bind("<KeyRelease>", lambda event: TkHelper.lazy_highligting(ProgrammingText.active_text), "+")
 
     def new_file(self):
-		self.loaded_data.append(FileContent(MainWindow, root, self.editor_frame, "New File"))
-		self.editor_frame.add(self.loaded_data[-1].frame, text = self.loaded_data[-1].filename)
+        self.loaded_data.append(FileContent(MainWindow, root, self.editor_frame, "New File"))
+        self.editor_frame.add(self.loaded_data[-1].frame, text = self.loaded_data[-1].filename)
 
     def load_file(self, path):
         pass
