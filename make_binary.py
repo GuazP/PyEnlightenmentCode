@@ -9,11 +9,11 @@ run_command = lambda shell_string: subprocess.run(shell_string, shell=True, univ
 
 class Command():
     #Settings
-    #optimizer = " " if False else " -OO " #Set __debug__ flag to False statement instead of deafult True || asserts are removed from bytecode || docstrings removed from binary 
+    optimizer = " " if False else " -OO " #Set __debug__ flag to False statement instead of deafult True || asserts are removed from bytecode || docstrings removed from binary 
     exec_name = "PyEnlightenmentCode"
-    py_version = "python3.8"
-    #compiler = f"{py_version}{optimizer}-m PyInstaller"
-    compiler = f"pyinstaller"
+    py_version = "python3.6" # Or never
+    compiler = f"{py_version} {optimizer} -m PyInstaller"
+    #~ compiler = f"pyinstaller"
     main = "main_frame.py"
     flags = " ".join(iter([ "--onefile", #Make only one binary independent file, which include dependencies.
                             "--hidden-import=tkinter", #Make hidden import for tkinter (there is some issue with normal dependency with tkinter, there is a workaround) 
