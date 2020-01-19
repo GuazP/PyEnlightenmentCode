@@ -199,6 +199,10 @@ def argparse_logging_settings():
     parser.add_argument("-d", "--debug", help="set logging to DEBUG",
                         action="store_const", dest="loglevel",
                         const=logging.DEBUG, default=logging.ERROR)
+    parser.add_argument("--test", help="test editor what is going wrong",
+                        dest="test", default=None)
+    parser.add_argument("--path", help="file path to store logs",
+                        action="store", dest="path", default=None)
 
 def argparse_program_settings():
     pass #To-Do

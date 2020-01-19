@@ -8,8 +8,15 @@ run_command = lambda shell_string: subprocess.run(shell_string, shell=True, univ
 class Settings():
     pip_installer = "pip"
     packages =  ["ttkthemes==2.4.0", #Bibliography: https://readthedocs.org/projects/ttkthemes/downloads/pdf/latest/
-                 "tkinter"#,
-                 ]#...
+                 "tkinter", #Any version compatybile
+                 "regex", #Any version compatybile
+                 "jsonlib-python3", #Any version compatybile
+                 "typing" #Any version compatybile
+                ]#...
 
+    def run(self):
+        for package in self.packages:
+            run_command(f"{self.pip_installer} install {package}")
+        
 if __name__ == "__main__":
     Settings.run(run_command)
