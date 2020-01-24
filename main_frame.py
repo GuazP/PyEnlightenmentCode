@@ -129,19 +129,13 @@ class MainWindow(ttk.Frame):
     @classmethod
     def load_file(cls: 'MainWindow') -> None:
         logging.debug("`MainWindow.load_file` called")
-        selected_file = filedialog.askopenfilename(initialdir = os.path.expanduser("~"), title = "Select file", filetypes = (("python files","*.py"), ("all files", "*.*")))
-        logging.debug(f"selected file: {selected_file}")
+        MainWindow._editor_manager.load_file()
         pass
 
     @classmethod
     def save_file(cls: 'MainWindow', as_new: bool = False) -> None:
-        file_data: 'FileContent' = self._filesframe.get_actual()
         logging.debug("`MainWindow.save_file` called")
-        if as_new or file_data.is_new():
-            selected_file = filedialog.asksaveasfilename(initialdir = os.path.expanduser("~"),
-                                                         title = "Select where to save file",
-                                                         filetypes = (("python files", "*.py"), ("all files", "*.*")))
-        pass
+        MainWindow._editor_manager.save_file(as_new = as_new)
 
     @classmethod
     def configure_settings(cls: 'MainWindow') -> None:
