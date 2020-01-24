@@ -11,7 +11,7 @@ class Command():
     #Settings
     optimizer = " " if False else " -OO " #Set __debug__ flag to False statement instead of deafult True || asserts are removed from bytecode || docstrings removed from binary 
     exec_name = "PyEnlightenmentCode"
-    py_version = "python3.6" # Or never
+    py_version = "python3.8" # Or never
     compiler = f"{py_version} {optimizer} -m PyInstaller"
     #~ compiler = f"pyinstaller"
     main = "main_frame.py"
@@ -64,9 +64,22 @@ class Command():
                                f"rm -rfv",
                                f"./{cls.exec_name}"
                                ]))
+    @classmethod
+    def clean_install_files(cls):
+        return " ".join(iter([ f"rm -rfv",
+                               f"dist/",
+                               f"build/",
+                               f"{cls.exec_name}.spec"
+                               f"./{cls.exec_name}"
+                               ]))
                                 
 
 def main(args):
+    #Clean only files after failed installation
+    if args.clean:
+        run_command(Command.clean_install_files())
+        return
+    
     #Clean python cache
     run_command(Command.clean_cache_files())
     
@@ -91,6 +104,9 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--delete-after-run", dest="run_and_delete",
                         default=False, action="store_true",
                         help="Run after compile and delete when program ended")
+    parser.add_argument("-c", "--clean", dest="clean",
+                        default=False, action="store_true",
+                        help="Clean all installation files")
 
     args = parser.parse_args()
     main(args)
