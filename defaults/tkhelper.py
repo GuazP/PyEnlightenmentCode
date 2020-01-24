@@ -150,6 +150,8 @@ class Default():
                 "execute": "python3",                           #Interpreter
                 "debug": "python3 -m pdb",                      #Debuger
                 "binary": "pyinstaller",                        #'Compiler'
+                "terminal": "x-terminal-emulator",              #Terminal emulator
+                "default_path": os.path.expanduser("~/"),       #Default path
                 "basic_font": "monospace 10",                   #Basic Font
                 "highlight_font": "monospace 10 bold",          #Bolded Font
                 "darkmode": True                                #General color mode
@@ -165,7 +167,7 @@ class Default():
                 "bfont_color_builtin": '#B11900',               #Bright chain color
                 "dfont_color_digits": '#D0762D',                #Dark digits color
                 "bfont_color_digits": '#3F89D2',                #Bright digits color
-                "dfont_color_string": '#0026A1',                #Dark string color
+                "dfont_color_string": '#304FB4',                #Dark string color
                 "bfont_color_string": '#5D3A1E',                #Bright string color
                 "dfont_color_mstring": '#B42A63',               #Dark multiline string color
                 "bfont_color_mstring": '#4BD59C',               #Bright multiline string color
