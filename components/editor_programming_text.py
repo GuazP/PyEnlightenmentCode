@@ -8,9 +8,17 @@ import logging
 from defaults.tkhelper import TkHelper
 from defaults.tkhelper import Default
 
+example_code = """import math
+
+for i in range(100):
+    j = math.sqrt(i)
+"""
+
 class ProgrammingText(tk.Frame):
     active_text: 'TkHighlightningText' = None
-    def __init__(self, *args: tuple, **kwargs: dict):
+    active_linenum: 'tk.Text' = None
+    
+    def __init__(self, template: bool = False, *args: tuple, **kwargs: dict):
         super().__init__(*args, **kwargs)
         
         self.text: 'TkHighlightningText' = TkHighligtningText(self, font="monospace 10")
@@ -19,33 +27,71 @@ class ProgrammingText(tk.Frame):
         if self.active_text is None:
             self.active_text = self.text
         TkHelper.config_tags(self)
-        self.text.insert("end", "for some range as example 'of' 9.75 examples in \"code\" # And there is a comment ;)")
-        self.text.insert("end", "\nline nr. "+"\nline nr. ".join(str(i) for i in range(2, 1000)))
+        #~ self.text.insert("end", example_code)
+        #~ self.text.insert("end", "for some range as example 'of' 9.75 examples in \"code\" # And there is a comment ;)")
+        #~ self.text.insert("end", "\n#line nr. "+"\n#line nr. ".join(str(i) for i in range(6, 50)))
         self.text.focus()
 
         self.linenum: 'tk.Text' = tk.Text(self, font="monospace 10", width=4) #To-Do
+        #~ self.linenum: 'tk.Text' = TextLineNumbers(self, font="monospace 10", width=4) #To-Do
         self.linenum.tag_configure('line', justify='right') #To-Do
-        self.linenum.insert("end", "\n".join(str(i) for i in range(1, 1000)))
+        lines = int(self.text.index('end').split('.')[0])
+        self.linenum.insert("end", "\n".join(str(i) for i in range(1, lines)))
         self.linenum.config(state = "disabled")
+        #~ self.linenum.attach(self.text)
 
-        self.scroll: 'tk.Text' = ttk.Scrollbar(self, command = self.text.yview or self.linenum.yview)
-        self.text.configure(yscrollcommand = self.scroll.set)
-        self.linenum.configure(yscrollcommand = self.scroll.set)
+        self.scroll: 'tk.Text' = ttk.Scrollbar(self, command = self.__scrollBoth)
+        self.text.config(yscrollcommand=self.__updateScroll)
+        self.linenum.config(yscrollcommand=self.__updateScroll)
 
         self.scroll.pack(side = tk.RIGHT, fill = tk.Y)
         self.linenum.pack(side = tk.LEFT, fill = tk.Y) #To-Do      
         self.text.pack(side = tk.TOP, fill = tk.BOTH, expand = True)
         
-        self.bind('<<Selection>>', lambda event: ProgrammingText.select_range(self.text, "1.0", "end"))
-        self.bind("<Visibility>", lambda event: ProgrammingText.change_active_text(self.text))
+        #~ self.bind('<<Selection>>', lambda event: ProgrammingText.select_range(self.text, "1.0", "end"))
+        self.bind("<Visibility>", lambda event: ProgrammingText.change_active_text(self.text, self.linenum))
         #~ self.bind("<<Modified>>", lambda event: TkHelper.lazy_highligting(ProgrammingText.active_text))
         #~ self.bind("<KeyRelease>", lambda event: TkHelper.lazy_highligting(ProgrammingText.active_text))
         
-    @classmethod
-    def change_active_text(cls, programming_text):
-        TkHelper.remove_highlighting(cls.active_text)
-        cls.active_text = programming_text
-        TkHelper.lazy_highligting(cls.active_text, typed = False)
+    @staticmethod
+    def change_active_text(programming_text, linenum):
+        TkHelper.remove_highlighting(ProgrammingText.active_text)
+        ProgrammingText.active_linenum = linenum
+        ProgrammingText.active_text = programming_text
+        TkHelper.lazy_highligting(ProgrammingText.active_text, typed = False)
+        ProgrammingText.update_linenumbers()
+
+    @staticmethod
+    def update_linenumbers():
+        lines_text = int(ProgrammingText.active_text.index('end').split('.')[0])
+        lines_nums = int(ProgrammingText.active_linenum.index('end').split('.')[0])
+        logging.debug(f"Text widget contain {lines_text} lines.")
+        logging.debug(f"Linenumber widget contain {lines_nums} lines.")
+        ProgrammingText.active_linenum.config(state = "normal")
+        if lines_text > lines_nums:
+            logging.debug(f"Adding lines to line numbers: {range(lines_text-1, lines_nums+1)}")
+            ProgrammingText.active_linenum.insert("end", "\n"+"\n".join(str(i) for i in range(lines_text-1, lines_nums+1)))
+        elif lines_text < lines_nums:
+            logging.debug(f"Removing line numbers after: {lines_text}")
+            ProgrammingText.active_linenum.delete(f"{lines_text}.0", "end")
+        ProgrammingText.active_linenum.config(state = "disabled")
+
+    def add_content(self, content):
+        self.text.insert("end", content)
+        ProgrammingText.update_linenumbers()
+
+    def __scrollBoth(self, action, position, type=None):
+        self.text.yview_moveto(position)
+        self.linenum.yview_moveto(position)
+
+    def __updateScroll(self, first, last, type=None):
+        lines = int(self.text.index('end').split('.')[0])
+        self.linenum.delete('1.0', tk.END)
+        self.linenum.insert("end", "\n".join(str(i) for i in range(1, lines)))
+        
+        self.text.yview_moveto(first)
+        self.linenum.yview_moveto(first)
+        self.scroll.set(first, last)
 
 class TkHighligtningText(tk.Text):
     def highlight_pattern(self, pattern: str, tag: str, regexp: bool = False,
@@ -72,3 +118,24 @@ class TkHighligtningText(tk.Text):
     @classmethod
     def select_range(self, active: 'TkHighlightningText', start: str, end: str):
         logging.debug(f"Selecting text from {start} to {end}")
+
+class TextLineNumbers(tk.Canvas):
+    def __init__(self, *args, **kwargs):
+        tk.Canvas.__init__(self, *args, **kwargs)
+        self.textwidget = None
+
+    def attach(self, text_widget):
+        self.textwidget = text_widget
+
+    def redraw(self, *args):
+        '''redraw line numbers'''
+        self.delete("all")
+
+        i = self.textwidget.index("@0,0")
+        while True :
+            dline= self.textwidget.dlineinfo(i)
+            if dline is None: break
+            y = dline[1]
+            linenum = str(i).split(".")[0]
+            self.create_text(2,y,anchor="nw", text=linenum)
+            i = self.textwidget.index("%s+1line" % i)
