@@ -7,6 +7,8 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext
 
+from defaults.tkhelper import Default
+
 class BottomPanel():
     def __init__(self, frame: 'ttk.Frame'):
         self.selector1: 'ttk.Button' = ttk.Button(frame, text="Editor Info")
@@ -28,14 +30,14 @@ class TextHandler(logging.Handler):
             "CRITICAL": "#0000FF",
             "ERROR": "#FF0000",
             "WARNING": "#AA1111",
-            "INFO": "#000000",
+            "INFO": "#FFFFFF",
             "DEBUG": "#00FF00",
             "NOTSET": "#303030"}
     
     def __init__(self, text):
         logging.Handler.__init__(self)
         self.text: 'scrolledText.ScrolledText' = text
-        formatter: 'logging.Formatter' = logging.Formatter('%(name)s - %(levelname)-8s %(message)s')
+        formatter: 'logging.Formatter' = logging.Formatter('%(levelname)-8s %(message)s')
         self.setFormatter(formatter)
         for tag, color in self.tag_level.items():
             self.text.tag_config(tag, foreground=color)
@@ -43,8 +45,9 @@ class TextHandler(logging.Handler):
     def emit(self, record):
         msg: str = self.format(record)
         def append():
+            print(msg)
             for tag in self.tag_level:
-                if tag in msg:
+                if msg.strip().startswith(tag):
                     self.text.configure(state='normal')
                     self.text.insert(tk.END, msg + '\n', tag)
                     self.text.configure(state='disabled')
