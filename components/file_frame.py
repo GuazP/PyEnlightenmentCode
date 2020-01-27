@@ -86,6 +86,9 @@ class EditorManager():
     def save_all_files(self):
         pass
 
+    def destroy_temp(self):
+        ExecutionTools.clean_temp_files()
+
     @staticmethod
     def change_active_file(file_content):
         EditorManager.active_file = file_content

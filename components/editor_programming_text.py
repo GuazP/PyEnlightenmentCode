@@ -49,7 +49,7 @@ class ProgrammingText(tk.Frame):
         self.text.pack(side = tk.TOP, fill = tk.BOTH, expand = True)
         
         #~ self.bind('<<Selection>>', lambda event: ProgrammingText.select_range(self.text, "1.0", "end"))
-        self.bind("<Visibility>", lambda event: ProgrammingText.change_active_text(self.text, self.linenum))
+        self.text.bind("<Visibility>", lambda event: ProgrammingText.change_active_text(self.text, self.linenum))
         #~ self.bind("<<Modified>>", lambda event: TkHelper.lazy_highligting(ProgrammingText.active_text))
         #~ self.bind("<KeyRelease>", lambda event: TkHelper.lazy_highligting(ProgrammingText.active_text))
         
