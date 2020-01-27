@@ -8,7 +8,7 @@ from tkinter import filedialog
 from ttkthemes import ThemedTk
 
 ## MainFrame typing namespace
-import typing   
+import typing
 from typing import Type
 from typing import List
 from typing import Callable
