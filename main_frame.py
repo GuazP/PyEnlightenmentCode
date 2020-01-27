@@ -110,6 +110,7 @@ class MainWindow(ttk.Frame):
         logging.debug("`MainWindow.exit` called")
         TkHelper.save_position(root)
         Default.save()
+        MainWindow._editor_manager.destroy_temp()
         root.destroy()
         sys.exit(0)
 
@@ -117,7 +118,7 @@ class MainWindow(ttk.Frame):
     def new_file(cls: 'MainWindow') -> None:
         logging.debug("`MainWindow.new_file` called")
         logging.error(str(dir(cls._editor_manager)))
-        cls._editor_manager.new_file()
+        MainWindow._editor_manager.new_file()
         pass
 
     @classmethod

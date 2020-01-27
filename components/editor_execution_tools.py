@@ -6,6 +6,8 @@ from defaults.tkhelper import TkHelper
 from defaults.tkhelper import Default
 import logging
 
+import os
+
 # For pythontutor
 import urllib.parse # Code to url
 import webbrowser # Run browser
@@ -33,9 +35,19 @@ class ExecutionTools(tk.Frame):
     def change_active_block(cls, code_canvas):
         cls.active_block = code_canvas
 
+    @staticmethod
+    def clean_temp_files():
+        for tmp_file in TkCodeExecutors.tmp_files_to_delete:
+            try:
+                os.remove(tmp_file)
+                logging.info(f"Deleting temporary file: {tmp_file}")
+            except FileNotFoundError:
+                pass
+
 class TkCodeExecutors(tk.Frame):
     pythontutor_site_prefix = "http://pythontutor.com/visualize.html#code="
     pythontutor_site_postfix = "&cumulative=false&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=py3anaconda&rawInputLstJSON=%5B%5D&textReferences=false"
+    tmp_files_to_delete = []
 
     def __init__(self, frame, code_object, *args, **kwargs):
         super().__init__(frame, *args, **kwargs)
@@ -75,24 +87,25 @@ class TkCodeExecutors(tk.Frame):
         logging.info(f"Code is correct to execute")
 
     def run_with_pdb(self):
-        with tempfile.NamedTemporaryFile(suffix=".py") as tmp_file:
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp_file:
             code = self.code_object.get("1.0",'end-1c')
-            code += "\ninput(\"Click enter to close\")\n"
             tmp_file.write(bytes(code, 'utf-8'))
             terminal = Default.get("terminal")
             debug_tool = Default.get("debug")
             execute = f"{terminal} -e {debug_tool} {tmp_file.name}"
             logging.info(f"Running: {execute}")
+            TkCodeExecutors.tmp_files_to_delete.append(tmp_file.name)
             subprocess.run(execute, shell=True, universal_newlines=True)
             
     def execute_code(self):
         with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp_file:
             code = self.code_object.get("1.0",'end-1c')
-            code += "\ninput(\"Click enter to close\")\n"
+            code += "\ninput(\"\"\"\n\n\"\"\"+\"-\"*40+\"\"\"\nClick enter to close\"\"\")\n"
             tmp_file.write(bytes(code, 'utf-8'))
             terminal = Default.get("terminal")
             executor = Default.get("execute")
             execute = f"{terminal} -e {executor} {tmp_file.name}"
             logging.info(f"Running: {execute}")
+            TkCodeExecutors.tmp_files_to_delete.append(tmp_file.name)
             subprocess.run(execute, shell=True, universal_newlines=True)
-        
+
