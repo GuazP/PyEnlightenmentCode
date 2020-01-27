@@ -117,12 +117,12 @@ class TkHelper():
         # ~ logging.debug()
         # Visualization https://www.debuggex.com/r/ | Testing https://regex101.com/
         # Note: Tkinter regex engine don't support Lookbehind asserts...
-        chain_pattern_detailed: str = r"(^|\s)?(" + r"|".join(iter(Default.chain_gramar)) + r")(?=(\s|:|;|\())"
-        builtin_pattern_detailed: str = r"(\s)+(" + r"|".join(iter(Default.builtin_func)) + r")(?=(\s|\(|\.))"
-        digits_pattern: str = r"(^|\[|\s|,|\(|\]|\})(\d+(\.\d+)?)(?=($|\s|,|\)|\]|}|;))" #Best would be: (^|(?<=[\b\s,\)]))(\d+(\.\d+)?)(?=($|\s|,|\)|\]|}|;))
-        strings_pattern: str = r"(r|f)?(\"(.|\s)*\")|(\'(.|\s)*\')"
-        mstrings_pattern: str = r"(r|f)?(\"{3}(.|\s)*\"{3})|(\'{3}(.|\s)*\'{3})"
-        comment_pattern: str = r"#.*$"
+        chain_pattern_detailed: str = Default.chain_pattern_detailed
+        builtin_pattern_detailed: str = Default.builtin_pattern_detailed
+        digits_pattern: str = Default.digits_pattern
+        strings_pattern: str = Default.strings_pattern
+        mstrings_pattern: str = Default.mstrings_pattern
+        comment_pattern: str = Default.comment_pattern
 
         if typed:
             line = int(text.index(tk.INSERT).split(".")[0])
@@ -200,6 +200,16 @@ class Default():
     strings: List[str] = ['\'', '\"']
     func_declarations: str = []
     class_declarations: str = []
+
+    
+    # Visualization https://www.debuggex.com/r/ | Testing https://regex101.com/
+    # Note: Tkinter regex engine don't support Lookbehind asserts...
+    chain_pattern_detailed: str = r"(^|\s)?(" + r"|".join(iter(chain_gramar)) + r")(?=(\s|:|;|\())"
+    builtin_pattern_detailed: str = r"(\s)+(" + r"|".join(iter(builtin_func)) + r")(?=(\s|\(|\.))"
+    digits_pattern: str = r"(^|\[|\s|,|\(|\]|\})(\d+(\.\d+)?)(?=($|\s|,|\)|\]|}|;))" #Best would be: (^|(?<=[\b\s,\)]))(\d+(\.\d+)?)(?=($|\s|,|\)|\]|}|;))
+    strings_pattern: str = r"(r|f)?(\"(.|\s)*\")|(\'(.|\s)*\')"
+    mstrings_pattern: str = r"(r|f)?(\"{3}(.|\s)*\"{3})|(\'{3}(.|\s)*\'{3})"
+    comment_pattern: str = r"#.*$"
 
     """Default config for MainFrame object, to separate code and store data"""
     def __init__(self: Type['Default'], parent: object) -> None:
