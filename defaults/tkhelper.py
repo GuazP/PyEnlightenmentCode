@@ -230,7 +230,7 @@ class Default():
     def get(cls: Type['Default'], attr: str, default: object = None) -> object:
         value = cls.defaults.get(attr, default)
         logging.debug(f"`{attr}` as `{value}` is requested from Default")
-        return cls.defaults.get(attr, default)
+        return value
 
     @classmethod
     def set(cls: Type['Default'], attr: str, value: object, alternative: object = None) -> None:

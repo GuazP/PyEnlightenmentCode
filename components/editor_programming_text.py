@@ -40,7 +40,7 @@ class ProgrammingText(tk.Frame):
         self.linenum.config(state = "disabled")
         #~ self.linenum.attach(self.text)
 
-        self.scroll: 'tk.Text' = ttk.Scrollbar(self, command = self.__scrollBoth)
+        self.scroll: 'tk.Scrollbar' = ttk.Scrollbar(self, command = self.__scrollBoth)
         self.text.config(yscrollcommand=self.__updateScroll)
         self.linenum.config(yscrollcommand=self.__updateScroll)
 
@@ -68,9 +68,9 @@ class ProgrammingText(tk.Frame):
         logging.debug(f"Text widget contain {lines_text} lines.")
         logging.debug(f"Linenumber widget contain {lines_nums} lines.")
         ProgrammingText.active_linenum.config(state = "normal")
-        if lines_text > lines_nums:
-            logging.debug(f"Adding lines to line numbers: {range(lines_text-1, lines_nums+1)}")
-            ProgrammingText.active_linenum.insert("end", "\n"+"\n".join(str(i) for i in range(lines_text-1, lines_nums+1)))
+        if lines_text > lines_nums :
+            logging.debug(f"Adding lines to line numbers: {range(lines_nums, lines_text)}")
+            ProgrammingText.active_linenum.insert("end", "\n"+"\n".join(str(i) for i in range(lines_nums, lines_text)))
         elif lines_text < lines_nums:
             logging.debug(f"Removing line numbers after: {lines_text}")
             ProgrammingText.active_linenum.delete(f"{lines_text}.0", "end")
@@ -85,10 +85,6 @@ class ProgrammingText(tk.Frame):
         self.linenum.yview_moveto(position)
 
     def __updateScroll(self, first, last, type=None):
-        lines = int(self.text.index('end').split('.')[0])
-        self.linenum.delete('1.0', tk.END)
-        self.linenum.insert("end", "\n".join(str(i) for i in range(1, lines)))
-        
         self.text.yview_moveto(first)
         self.linenum.yview_moveto(first)
         self.scroll.set(first, last)
@@ -113,29 +109,3 @@ class TkHighligtningText(tk.Text):
             self.tag_add(tag, "mStart", "mEnd")
             index: str = self.search(pattern, "mEnd","sLimit",
                                      count=count, regexp=regexp)
-                                     
-
-    @classmethod
-    def select_range(self, active: 'TkHighlightningText', start: str, end: str):
-        logging.debug(f"Selecting text from {start} to {end}")
-
-class TextLineNumbers(tk.Canvas):
-    def __init__(self, *args, **kwargs):
-        tk.Canvas.__init__(self, *args, **kwargs)
-        self.textwidget = None
-
-    def attach(self, text_widget):
-        self.textwidget = text_widget
-
-    def redraw(self, *args):
-        '''redraw line numbers'''
-        self.delete("all")
-
-        i = self.textwidget.index("@0,0")
-        while True :
-            dline= self.textwidget.dlineinfo(i)
-            if dline is None: break
-            y = dline[1]
-            linenum = str(i).split(".")[0]
-            self.create_text(2,y,anchor="nw", text=linenum)
-            i = self.textwidget.index("%s+1line" % i)

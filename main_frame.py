@@ -49,7 +49,6 @@ class MainWindow(ttk.Frame):
     def __init__(self: 'MainWindow', root: 'tk.Tk', config: 'Default', *args: tuple, **kwargs: dict) -> None:
         ttk.Frame.__init__(self, root, *args, **kwargs)
 
-        # ~ self.grid()
         self.pack(fill=tk.BOTH, expand=True)
 
         # Path to store information etc.
@@ -100,11 +99,6 @@ class MainWindow(ttk.Frame):
         load_last_data()
 
         root.protocol("WM_DELETE_WINDOW", lambda: MainWindow.exit_(self._root))
-
-        #~ def update():
-            #~ logging.debug("FOO")
-            #~ root.after(1000, update)
-        #~ root.after(1000, update)
 
     @staticmethod
     def add_to_mainloop(root: 'tk.Tk', time: int = 100, func: Callable = None) -> None:
@@ -158,7 +152,8 @@ class MainFrameErrorCatcher():
             
     @staticmethod
     def general_undefined_error_logging(ex):
-        logging.error("{Undefined error occured.")
+        logging.error("{")
+        logging.error("Undefined error occured.")
         logging.error(f"Type: {type(ex).__name__}")
         logging.error(f"Reason: {str(ex)}")
         error_in_file = ex.__traceback__.tb_frame.f_code.co_filename[:-3]
