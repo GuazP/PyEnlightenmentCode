@@ -271,7 +271,7 @@ W celu pomocy przy rozwoju oprogramowania, dołączone zostają dwa skrypty `'ma
 ============================
 
 Kod jest otwartoźródłowy, do znalezienia pod adresem: https://github.com/GuazP/PyEnlightenmentCode
-Ostatnia stabilna wersja pliku wykonywalnego znajduje się w podfolderze /bin pod nazwą PyEnlightmentCode.
+Ostatnia stabilna wersja pliku wykonywalnego znajduje się w podfolderze `'PyEnlightenmentCode/binary'` pod nazwą PyEnlightmentCode.
 
 
 2.5 Kolorwanie składni
