@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3.7
 
 import subprocess
 import os
@@ -11,7 +11,7 @@ class Command():
     #Settings
     optimizer = " " if False else " -OO " #Set __debug__ flag to False statement instead of deafult True || asserts are removed from bytecode || docstrings removed from binary 
     exec_name = "PyEnlightenmentCode"
-    py_version = "python3.6" # Or never
+    py_version = "python3.7" # Or never
     compiler = f"{py_version} {optimizer} -m PyInstaller"
     #~ compiler = f"pyinstaller"
     main = "main_frame.py"
