@@ -206,7 +206,7 @@ class Default():
     # Note: Tkinter regex engine don't support Lookbehind asserts...
     chain_pattern_detailed: str = r"(^|\s)?(" + r"|".join(iter(chain_gramar)) + r")(?=(\s|:|;|\())"
     builtin_pattern_detailed: str = r"(\s)+(" + r"|".join(iter(builtin_func)) + r")(?=(\s|\(|\.))"
-    digits_pattern: str = r"(^|\[|\s|,|\(|\]|\})(\d+(\.\d+)?)(?=($|\s|,|\)|\]|}|;))" #Best would be: (^|(?<=[\b\s,\)]))(\d+(\.\d+)?)(?=($|\s|,|\)|\]|}|;))
+    digits_pattern: str = r"(^|\[|\s|,|\(|\]|\})(\d+(\.\d+)?j?)(?=($|\s|,|\)|\]|}|;))" #Best would be: (^|(?<=[\b\s,\)]))(\d+(\.\d+)?)(?=($|\s|,|\)|\]|}|;))
     strings_pattern: str = r"(r|f)?(\"(.|\s)*\")|(\'(.|\s)*\')"
     mstrings_pattern: str = r"(r|f)?(\"{3}(.|\s)*\"{3})|(\'{3}(.|\s)*\'{3})"
     comment_pattern: str = r"#.*$"
