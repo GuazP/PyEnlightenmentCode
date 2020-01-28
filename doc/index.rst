@@ -24,7 +24,6 @@ Spis treści
 ###########
 
 #. **Wstęp**
-
 #. **Cel i założenia projektu**
     #. Wymagania sprzętowe
     #. Wymagania funkcjonalne
@@ -39,9 +38,7 @@ Spis treści
 #. **Testy**
     #. Testy wyrażeń regularnych
     #. Testy zarządzania plikami
-
 #. **Podstumowanie**
-
 #. **Bibliografia i literatura**
 
 1. Wstęp
@@ -55,7 +52,7 @@ Jest to o tyle popularną praktyką aby część pracy ludzkiej przenosić na ma
 Aby wykształcić nowych programistów istnieje wiele metod mniej lub bardziej skutecznych. Natomiast dobry programista powinien bezbłednie rozumieć podstawy programowania, potrafić zdebugować kod rozumiejąc co się dzieje na każdym kroku, znaleźć błąd i go naprawić. W tym celu powstał PyEnlightenmentCode (dalej PEC) który skupia się na dostarczeniu narzędzi ułatwiających naukę dla nowych programistów.
 
 1.1 Wymagania sprzętowe
-=======================
+#######################
 
 PyEnlightenmentCode do działania w pełni poprawnie wymaga:
 
@@ -68,7 +65,7 @@ PyEnlightenmentCode do działania w pełni poprawnie wymaga:
 * pdb (Debugger)
 
 1.2 Wymagania funkcjonalne
-==========================
+##########################
 
 PyEnlightenmentCode (dalej PEC) spełnia poniżej wymienione wymagania funkcjonalne:
 
@@ -105,7 +102,7 @@ Gdy edytor zostanie zamknięty poprawnie, zostanie zapisana lokalizacja i umiejs
 Pasek menu umożliwia zarządzanie plikami jak wyżej wymieniono.
 
 1.3 Podstawy użytkowania
-========================
+########################
 
 Aby skorzystać z edytora wystarczy uruchomić dostarczony plik binarny. Zalecane jednak jest umieścić plik binarny w lokalizacji /usr/bin z uprawnieniami do wykonywania przez aktualnego użytkownika. Wtedy staje się dostępny z poziomu konsoli i potencjalnych dowiązań (ikon szybkiego dostępu / skrótów). 
 
@@ -113,7 +110,7 @@ Aby skorzystać z edytora wystarczy uruchomić dostarczony plik binarny. Zalecan
 ################
 
 2.1 Biblioteki
-==============
+##############
 
 Do implementacji zostały wykorzystane następujące pakiety wraz z używaną funkcjonalnością:
 
@@ -168,7 +165,7 @@ Zarządzanie plikami tymczasowymi.
 Wszystkie są dostępne w standardowej biblitece pythona, bądź w ramach pakietów dostępnych porzez pip3.
 
 2.2 Struktura
-=============
+#############
 
 Na implementację PyEnlightenmentCode składa się wiele klas, które zapewniają strukturyzację kodu:
 
@@ -261,21 +258,21 @@ Umożliwia zarządzanie plikami, przełączanie się pomiędzy nimi, wytypowanie
 Zbiór metod statycznych które odpowiadają za konfigurację okna, widżetów i kolorowanie składni. Odseparowanie ich upraszcza kod samego graficznego interfejsu oraz separuje działania mogące spowodować błąd od klas które w wyniku błędu mogłyby zaprzestać swojego działania.
 
 2.3 Opis aplikacji
-==================
+##################
 
 Aplikacja posiada plik wykonywalny umożliwiający jej otworzenie, natomiast brak spełnionych zależności nie zapewnia pełnej funkcjonalności przewidzianej dla edytora. W pliku wykonywalnym zaszyte są takie zależności jak dane niezbędne do uruchomienia się samodzielnie na potrzebę edycji tekstu, otworzenia przeglądarki i skonstruowania url dla portalu pythontutor oraz sprawdzenia kodu pod kątem błędów składniowych (niezależnie od tego czy interpreter pythona jest zainstalowany).
 
 W celu pomocy przy rozwoju oprogramowania, dołączone zostają dwa skrypty `'make_binary.py'` i `'dev_dependencies.py'`. Pierwszy umożliwia z podstawową wiedzą kompilację źródeł w plik wykonywalny. Drugi instaluje niezbędne pakiety dla developera aby umożliwić debugowanie offline.
 
 2.4 Edytor PyEnlightmentCode
-============================
+############################
 
 Kod jest otwartoźródłowy, do znalezienia pod adresem: https://github.com/GuazP/PyEnlightenmentCode
 Ostatnia stabilna wersja pliku wykonywalnego znajduje się w podfolderze `'PyEnlightenmentCode/binary'` pod nazwą PyEnlightmentCode.
 
 
 2.5 Kolorwanie składni
-======================
+######################
 
 Na kolorowanie składni w edytorze PyEnlightmentCode składa się szereg wyrażeń regularnych:
 
@@ -339,7 +336,10 @@ Wyrażenia regularne są zoptymalizowane pod wyszukiwanie wyrażeniami regularny
 Tagi kolorujące składnie są usuwane z pola tekstowego po przełączeniu na inny plik w celu optymalizacji zajmowanej przez program pamięci, podczas wyboru pliku zostaje pod względem podświetlania składni przeszukany cały aktualny plik tekstowy. W trakcie pisania kodu, po postawieniu każdego znaku ponownie jest uruchamiane kolorowanie składni, tym razem obejmując tylko trzy linie powyżej, aktualną i do trzech linii poniżej o ile istnieją.
 
 2.6 Narzędzia debugujące
-========================
+########################
+
+.. image:: pics/PyEnglightenmentCode_Tools.png
+  :width: 800
 
 1. `'Check code at Pythontutor'`
 
@@ -361,19 +361,19 @@ Uruchamia kod w nowym terminalu.
 ########
 
 3.1 Testy wyrażeń regularnych
-=============================
+#############################
 
 -ToDo-
 
 3.2 Testy zarządzania plikami
-=============================
+#############################
 
 -ToDo-
 
 4. Podsumowanie
 ###############
 
-
+Edytor spełnia swoje założenie pomagając w wizualizacji kodu. Dzięki tej aplikacji nowi programiści używając jej będą mieć dokładną wizualizację co dzieje się w napisanym przez nich programie. Powinno to zminimalizować ryzyko innej interpretacji co dzieje się podczas podstawowych operacji jak działania na listach i przyspieszyć naukę dzięki możliwości szybszego przejścia do kolejnych ćwiczeń z solidną informacją zarówno w postaci kodu jak i wizualnej.
 
 5. Bibliografia, literatura i narzędzia
 #######################################
