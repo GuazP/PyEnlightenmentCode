@@ -29,8 +29,8 @@ Spis treści
     #. Wymagania funkcjonalne
     #. Podstawy użytkowania
 #. **Implementacja**
-	#. Biblioteki
-	#. Struktura
+    #. Biblioteki
+    #. Struktura
     #. Opis aplikacji
     #. Edytor PyEnlightmentCode
     #. Kolorowanie składni
@@ -231,25 +231,25 @@ Umożliwia zarządzanie plikami, przełączanie się pomiędzy nimi, wytypowanie
         
         `'PyEnligtenmentCode/components/editor_programming_text.py'`
 
-	Konfiguruje trzy widżety, pole tekstowe dla kodu `'TkHighlightningText'`, pole tekstowe dla numerów linii `'tk.Text'` oraz pasek przewijania `'tk.Scrollbar'` zsynchronizowany dla obu pól tekstowych. Statycznie oznacza aktywne pole tekstowe z kodem, definiuje działanie zmiany aktywnego pola tekstowego, aktualizacji numerów linii oraz podświetlania składni tekstu.
+    Konfiguruje trzy widżety, pole tekstowe dla kodu `'TkHighlightningText'`, pole tekstowe dla numerów linii `'tk.Text'` oraz pasek przewijania `'tk.Scrollbar'` zsynchronizowany dla obu pól tekstowych. Statycznie oznacza aktywne pole tekstowe z kodem, definiuje działanie zmiany aktywnego pola tekstowego, aktualizacji numerów linii oraz podświetlania składni tekstu.
 
-	* **TkHighlightningText:** Widżet opakowujący tk.Text
+    * **TkHighlightningText:** Widżet opakowujący tk.Text
         
         `'PyEnligtenmentCode/components/editor_programming_text.py'`
 
-	Dodaje metodę odpowiedzialną za wyszukiwanie i kolorowanie składni pythona. 
+    Dodaje metodę odpowiedzialną za wyszukiwanie i kolorowanie składni pythona. 
 	
-	* **ExecutionTools:** Widżet pośredni, opakowujący tk.Frame
+    * **ExecutionTools:** Widżet pośredni, opakowujący tk.Frame
         
         `'PyEnligtenmentCode/components/editor_execution_tools.py'`
 	
-	Konfiguruje blok `'TkCodeExecutors'` oraz oznacza aktywny blok aby poprawnie wybrać kod do używanych narzędzi debugujących.
+    Konfiguruje blok `'TkCodeExecutors'` oraz oznacza aktywny blok aby poprawnie wybrać kod do używanych narzędzi debugujących.
 	
-	* **TkCodeExecutors:** Widżet opakowujący tk.Frame
+    * **TkCodeExecutors:** Widżet opakowujący tk.Frame
         
         `'PyEnligtenmentCode/components/editor_execution_tools.py'`
         
-	Tworzy przyciski `'ttk.Button'` które umożliwiają wcześniej wymienione akcje debugowania kodu. 
+    Tworzy przyciski `'ttk.Button'` które umożliwiają wcześniej wymienione akcje debugowania kodu. 
 
 * **TkHelper:** Menadżer tkintera
 
