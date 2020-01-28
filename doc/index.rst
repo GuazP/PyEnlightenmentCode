@@ -8,8 +8,8 @@ Praca Inżynierska
 Temat: Edytor do nauki programowania w języku Python
 ====================================================
 
-Imię i nazwisko autora: Maciej Pawłowski
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Imię i nazwisko autora: Maciej Gravestone
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Kierunek studiów: Informatyka
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Specjalizacja: Inżynieria Oprogramowania
