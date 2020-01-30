@@ -128,6 +128,8 @@ class TkHelper():
             line = int(text.index(tk.INSERT).split(".")[0])
             startline = f"{line-3}.0" if line > 3 else f"1.0"
             endingline = f"{line+3}.0"
+            if endingline > text.index(tk.END):
+                endingline = "end"
         else:
             startline = "1.0"
             endingline = "end"
@@ -201,11 +203,10 @@ class Default():
     func_declarations: str = []
     class_declarations: str = []
 
-    
     # Visualization https://www.debuggex.com/r/ | Testing https://regex101.com/
     # Note: Tkinter regex engine don't support Lookbehind asserts...
-    chain_pattern_detailed: str = r"(^|\s)(" + r"|".join(iter(chain_gramar)) + r")(?=(\s|:|;|\())"
-    builtin_pattern_detailed: str = r"(\s)+(" + r"|".join(iter(builtin_func)) + r")(?=(\s|\(|\.))"
+    chain_pattern_detailed: str = r"(^|\s+|\b)(" + r"|".join(iter(chain_gramar)) + r")(?=(\s|:|;|\())"
+    builtin_pattern_detailed: str = r"(^|\s+|\b)(" + r"|".join(iter(builtin_func)) + r")(?=(\s|\(|\.))"
     digits_pattern: str = r"(^|\[|\s|,|\(|\]|\})(\d+(\.\d+)?j?)(?=($|\s|,|\)|\]|}|;))" #Best would be: (^|(?<=[\b\s,\)]))(\d+(\.\d+)?)(?=($|\s|,|\)|\]|}|;))
     strings_pattern: str = r"(r|f)?(\"(.|\s)*\")|(\'(.|\s)*\')"
     mstrings_pattern: str = r"(r|f)?(\"{3}(.|\s)*\"{3})|(\'{3}(.|\s)*\'{3})"
@@ -264,3 +265,4 @@ class Default():
             logging.debug(f"Configs not found, loading Default as configs.")
             Default.save()
         return Default
+
