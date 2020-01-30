@@ -204,7 +204,7 @@ class Default():
     
     # Visualization https://www.debuggex.com/r/ | Testing https://regex101.com/
     # Note: Tkinter regex engine don't support Lookbehind asserts...
-    chain_pattern_detailed: str = r"(^|\s)?(" + r"|".join(iter(chain_gramar)) + r")(?=(\s|:|;|\())"
+    chain_pattern_detailed: str = r"(^|\s)(" + r"|".join(iter(chain_gramar)) + r")(?=(\s|:|;|\())"
     builtin_pattern_detailed: str = r"(\s)+(" + r"|".join(iter(builtin_func)) + r")(?=(\s|\(|\.))"
     digits_pattern: str = r"(^|\[|\s|,|\(|\]|\})(\d+(\.\d+)?j?)(?=($|\s|,|\)|\]|}|;))" #Best would be: (^|(?<=[\b\s,\)]))(\d+(\.\d+)?)(?=($|\s|,|\)|\]|}|;))
     strings_pattern: str = r"(r|f)?(\"(.|\s)*\")|(\'(.|\s)*\')"
