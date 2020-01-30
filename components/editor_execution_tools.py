@@ -100,7 +100,7 @@ class TkCodeExecutors(tk.Frame):
     def execute_code(self):
         with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp_file:
             code = self.code_object.get("1.0",'end-1c')
-            code += "\ninput(\"\"\"\n\n\"\"\"+\"-\"*40+\"\"\"\nClick enter to close\"\"\")\n"
+            code += "\ninput(\"\"\"\n\n\"\"\"+\"-\"*40+\"\"\"\nClick enter to close\n\"\"\")\n"
             tmp_file.write(bytes(code, 'utf-8'))
             terminal = Default.get("terminal")
             executor = Default.get("execute")
