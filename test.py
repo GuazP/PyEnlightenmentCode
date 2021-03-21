@@ -148,7 +148,7 @@ class GuiTests(unittest.TestCase):
         pyautogui.click()
         pyautogui.moveTo(GuiTests.exitMenuButton)
         pyautogui.click()
-        os.remove(GuiTests.fileToWriteTo) # damn window position gets reset on my OS, so i had to add this, make it more leegant in the future
+        os.remove(GuiTests.fileToWriteTo)
         configDict = json.load(open(os.path.join(os.getenv('HOME'), '.config/PyEnlightenmentCode/.config.json')))
         configDict['x'] = 1280
         configDict['y'] = 931
