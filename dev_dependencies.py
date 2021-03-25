@@ -11,12 +11,13 @@ class Settings():
                  "tkinter", #Any version compatybile
                  "regex", #Any version compatybile
                  "jsonlib-python3", #Any version compatybile
-                 "typing" #Any version compatybile
+                 "typing", #Any version compatybile
+                 "pyautogui"
                 ]#...
 
     def run(self):
-        for package in self.packages:
-            run_command(f"{self.pip_installer} install {package}")
+        for package in Settings.packages:
+            run_command(f"{Settings.pip_installer} install {package}")
         
 if __name__ == "__main__":
     Settings.run(run_command)

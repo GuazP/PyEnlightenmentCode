@@ -30,9 +30,7 @@ class EditorManager():
             self.loaded_data = []
             self.loaded_data.append(FileContent(MainWindow, root, self.editor_frame, "New File"))
             self.editor_frame.add(self.loaded_data[-1].frame, text = self.loaded_data[-1].filename)
-            self.loaded_data.append(FileContent(MainWindow, root, self.editor_frame, "New File2"))
-            self.editor_frame.add(self.loaded_data[-1].frame, text = self.loaded_data[-1].filename)
-
+            
         self.MainWindow = MainWindow
         self.root = root
         root.bind("<KeyRelease>", lambda event: TkHelper.lazy_highligting(ProgrammingText.active_text) or ProgrammingText.update_linenumbers(), add="+")
@@ -83,9 +81,6 @@ class EditorManager():
         self.active_file.filename = self.active_file.path.split(os.path.sep)[-1]
         self.editor_frame.tab(self.active_file.frame, text=self.active_file.filename)
     
-    def save_all_files(self):
-        pass
-
     def destroy_temp(self):
         ExecutionTools.clean_temp_files()
 
@@ -129,13 +124,9 @@ class FileContent():
         #ToDo next frame with block scheme
         self.execution_tools: 'ExecutionTools' = ExecutionTools(self.frame, code_object)
         self.execution_tools.pack(fill = tk.BOTH, expand = True)
-        #ToDo next frame with debuger scheme
-        #~ self.debugger_frame: 'Debugger' = Debugger(self.frame)
-        #~ self.debugger_frame.pack(fill = tk.BOTH, expand = True)
 
         self.frame.add(self.programming_text, text="Code")
         self.frame.add(self.execution_tools, text="Tools")
-        #~ self.frame.add(self.debugger_frame, text="Tools")
         
         self.frame.bind("<Visibility>", lambda event: EditorManager.change_active_file(self))
 

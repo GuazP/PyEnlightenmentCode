@@ -61,7 +61,7 @@ class MainWindow(ttk.Frame):
         def general_window_setup() -> None:
             TkHelper.configure_window(self._root, title="PyEnlightenmentCode")
             TkHelper.configure_visual(self._root, self.darkmode, "Text")
-            TkHelper.configure_font(self._root, self.font)
+            #~ TkHelper.configure_font(self._root, self.font)
 
         # Setup menubar
         def top_menu_bar_setup() -> 'MenuBar':
@@ -75,11 +75,6 @@ class MainWindow(ttk.Frame):
             self._bottompanel = BottomPanel(self._bottom_frame) #ToDo
             self._bottom_frame.pack(side = tk.BOTTOM, fill = tk.X, expand = False)
 
-        # Left panel to navigate over files and methods
-        def project_left_panel_setup() -> 'ProjectManager':
-            #~ project_manager = ProjectManager() #ToDo
-            pass
-            
         # Load stored previously data
         def load_last_data() -> List['FileFrame']:
             #ToDo load last opened files.
@@ -95,7 +90,7 @@ class MainWindow(ttk.Frame):
         #Frames:
         bottom_panel_setup()
         top_menu_bar_setup()
-        project_left_panel_setup()
+        #~ project_left_panel_setup()
         load_last_data()
 
         root.protocol("WM_DELETE_WINDOW", lambda: MainWindow.exit_(self._root))

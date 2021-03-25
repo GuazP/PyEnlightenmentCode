@@ -62,10 +62,6 @@ class TkHelper():
             logging.debug(f"BrightTheme is set for: {args}")
 
     @staticmethod
-    def configure_font(master: Type['tk.Tk'], font: str = 'monospace') -> None:
-        pass
-
-    @staticmethod
     def configure_grid_x(frame: Type['tk.Frame'], col: int = 1,
                          col_interval: int = 1, weight: int = 1) -> None:
         for x in range(col*col_interval):
@@ -96,8 +92,6 @@ class TkHelper():
         programming.text.tag_config("digits", foreground=Default.get(prefix+"font_color_digits", '#D0762D'), font=bolded_font)
         programming.text.tag_config("one-line-string", foreground=Default.get(prefix+"font_color_string", '#0026A1'), font=normal_font)
         programming.text.tag_config("multi-line-string", foreground=Default.get(prefix+"font_color_mstring", '#B42A63'), font=normal_font)
-        #~ text.tag_config("class-name", foreground=Default.get("font_color_class", '#FFF500'), font=Default.basic_font) #To-Do
-        #~ text.tag_config("func-name", foreground=Default.get("font_color_func", '#FFF95C'), font=Default.basic_font) #To-Do
         programming.text.tag_config("comments", foreground=Default.get(prefix+"font_color_comment", '#001DA6'), font=normal_font)
 
     @staticmethod
@@ -114,7 +108,6 @@ class TkHelper():
             logging.warning("Text widget is None instead TkHighlightningText type.")
             return None
         logging.debug("Lazy highlightning runs")
-        # ~ logging.debug()
         # Visualization https://www.debuggex.com/r/ | Testing https://regex101.com/
         # Note: Tkinter regex engine don't support Lookbehind asserts...
         chain_pattern_detailed: str = Default.chain_pattern_detailed

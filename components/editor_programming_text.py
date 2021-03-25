@@ -68,12 +68,16 @@ class ProgrammingText(tk.Frame):
         logging.debug(f"Text widget contain {lines_text} lines.")
         logging.debug(f"Linenumber widget contain {lines_nums} lines.")
         ProgrammingText.active_linenum.config(state = "normal")
+        #~ logging.info(ProgrammingText.active_linenum.index('end').split('.'))
         if lines_text > lines_nums :
             logging.debug(f"Adding lines to line numbers: {range(lines_nums, lines_text)}")
             ProgrammingText.active_linenum.insert("end", "\n"+"\n".join(str(i) for i in range(lines_nums, lines_text)))
         elif lines_text < lines_nums:
             logging.debug(f"Removing line numbers after: {lines_text}")
             ProgrammingText.active_linenum.delete(f"{lines_text}.0", "end")
+        #~ elif int(ProgrammingText.active_linenum.index('end').split('.')[1]) == 0:
+            #~ logging.debug(f"Adding lines to line numbers: {lines_text}")
+            #~ ProgrammingText.active_linenum.insert("end", f"{lines_text-1}")
         ProgrammingText.active_linenum.config(state = "disabled")
 
     def add_content(self, content):
