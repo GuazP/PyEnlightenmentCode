@@ -53,16 +53,12 @@ class TkCodeExecutors(tk.Frame):
         super().__init__(frame, *args, **kwargs)
         self.selector1: 'ttk.Button' = ttk.Button(self, text="Check code at Pythontutor", command=self.open_pythontutor)
         self.selector1.pack(side=tk.TOP, fill="both", expand = True)
-        #~ self.selector1.grid(row=0, column=0, sticky="snew")
         self.selector2: 'ttk.Button' = ttk.Button(self, text="Check code locally", command=self.compile_errors)
-        #~ self.selector2.grid(row=1, column=0, sticky="snew")
         self.selector2.pack(side=tk.TOP, fill="both", expand = True)
         self.selector3: 'ttk.Button' = ttk.Button(self, text="Check code with debugging tool", command=self.run_with_pdb)
         self.selector3.pack(side=tk.TOP, fill="both", expand = True)
-        #~ self.selector3.grid(row=2, column=0, sticky="snew")
         self.selector4: 'ttk.Button' = ttk.Button(self, text="Execute code", command=self.execute_code)
         self.selector4.pack(side=tk.TOP, fill="both", expand = True)
-        #~ self.selector4.grid(row=3, column=0, sticky="snew")
         self.code_object = code_object
         
     def open_pythontutor(self):

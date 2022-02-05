@@ -9,7 +9,6 @@ class MenuBar():
         self.menubar: 'tk.Menu' = tk.Menu(_root)
         self.filemenu: 'tk.Menu' = tk.Menu(_root, tearoff=0)
         self.editmenu: 'tk.Menu' = tk.Menu(_root, tearoff=0)
-        #~ self.toolmenu: 'tk.Menu' = tk.Menu(_root, tearoff=0)
         self.helpmenu: 'tk.Menu' = tk.Menu(_root, tearoff=0)
 
         #########> FILE MENU <#########
@@ -23,14 +22,7 @@ class MenuBar():
 
         #########> EDIT MENU <#########
         self.editmenu.add_command(label = "Settings", command = MainWindow.configure_settings)
-        self.menubar.add_cascade(label = "Edit", menu = self.editmenu) 
-
-        #########> TOOL MENU <#########
-        #~ self.toolmenu.add_command(label = "Execute", command = lambda: None) #To-Do
-        #~ self.toolmenu.add_cascade(label = "Debug", command = lambda: None) #To-Do
-        #~ self.toolmenu.add_cascade(label = "Build binary", command = lambda: None) #To-Do
-        #~ self.toolmenu.add_cascade(label = "Build block scheme", command = lambda: None) #To-Do
-        #~ self.menubar.add_cascade(label = "Tools", menu = self.toolmenu) 
+        self.menubar.add_cascade(label = "Edit", menu = self.editmenu)
 
         #########> HELP MENU <#########
         self.helpmenu.add_command(label = "About PyEnlightenmentCode", command = lambda: None) #To-Do

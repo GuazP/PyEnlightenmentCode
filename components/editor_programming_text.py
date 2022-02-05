@@ -27,18 +27,13 @@ class ProgrammingText(tk.Frame):
         if self.active_text is None:
             self.active_text = self.text
         TkHelper.config_tags(self)
-        #~ self.text.insert("end", example_code)
-        #~ self.text.insert("end", "for some range as example 'of' 9.75 examples in \"code\" # And there is a comment ;)")
-        #~ self.text.insert("end", "\n#line nr. "+"\n#line nr. ".join(str(i) for i in range(6, 50)))
         self.text.focus()
 
         self.linenum: 'tk.Text' = tk.Text(self, font="monospace 10", width=4) #To-Do
-        #~ self.linenum: 'tk.Text' = TextLineNumbers(self, font="monospace 10", width=4) #To-Do
         self.linenum.tag_configure('line', justify='right') #To-Do
         lines = int(self.text.index('end').split('.')[0])
         self.linenum.insert("end", "\n".join(str(i) for i in range(1, lines)))
         self.linenum.config(state = "disabled")
-        #~ self.linenum.attach(self.text)
 
         self.scroll: 'tk.Scrollbar' = ttk.Scrollbar(self, command = self.__scrollBoth)
         self.text.config(yscrollcommand=self.__updateScroll)
@@ -48,10 +43,7 @@ class ProgrammingText(tk.Frame):
         self.linenum.pack(side = tk.LEFT, fill = tk.Y) #To-Do      
         self.text.pack(side = tk.TOP, fill = tk.BOTH, expand = True)
         
-        #~ self.bind('<<Selection>>', lambda event: ProgrammingText.select_range(self.text, "1.0", "end"))
         self.text.bind("<Visibility>", lambda event: ProgrammingText.change_active_text(self.text, self.linenum))
-        #~ self.bind("<<Modified>>", lambda event: TkHelper.lazy_highligting(ProgrammingText.active_text))
-        #~ self.bind("<KeyRelease>", lambda event: TkHelper.lazy_highligting(ProgrammingText.active_text))
         
     @staticmethod
     def change_active_text(programming_text, linenum):

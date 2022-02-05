@@ -21,11 +21,9 @@ class EditorManager():
     active_file: 'FileContent' = None
 
     def __init__(self, MainWindow: 'MainWindow', root: 'tk.Tk', frame: 'tk.Frame', *args: tuple, **kwargs: dict):
-        
         self.editor_frame: 'ttk.Notebook' = ttk.Notebook(frame, *args, **kwargs)
         self.editor_frame.pack(side = tk.TOP, fill=tk.BOTH, expand = True)
         self.editor_frame._active = None
-        
         if not self.loaded_data:
             self.loaded_data = []
             self.loaded_data.append(FileContent(MainWindow, root, self.editor_frame, "New File"))
@@ -121,7 +119,6 @@ class FileContent():
         self.programming_text: 'ProgrammingText' = ProgrammingText(self.frame)
         self.programming_text.pack(fill = tk.BOTH, expand = True)
         code_object = self.programming_text.text
-        #ToDo next frame with block scheme
         self.execution_tools: 'ExecutionTools' = ExecutionTools(self.frame, code_object)
         self.execution_tools.pack(fill = tk.BOTH, expand = True)
 

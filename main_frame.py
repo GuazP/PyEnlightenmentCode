@@ -48,7 +48,6 @@ class MainWindow(ttk.Frame):
     # Construct window.
     def __init__(self: 'MainWindow', root: 'tk.Tk', config: 'Default', *args: tuple, **kwargs: dict) -> None:
         ttk.Frame.__init__(self, root, *args, **kwargs)
-
         self.pack(fill=tk.BOTH, expand=True)
 
         # Path to store information etc.
@@ -61,36 +60,32 @@ class MainWindow(ttk.Frame):
         def general_window_setup() -> None:
             TkHelper.configure_window(self._root, title="PyEnlightenmentCode")
             TkHelper.configure_visual(self._root, self.darkmode, "Text")
-            #~ TkHelper.configure_font(self._root, self.font)
-
+            
         # Setup menubar
         def top_menu_bar_setup() -> 'MenuBar':
-            self._menubar = MenuBar(root, MainWindow) #To-Do
-
+            self._menubar = MenuBar(root, MainWindow)
+            
         # Setup bottom panel with console view, terminal redirections, etc.
         def bottom_panel_setup() -> 'BottomPanel':
             self._bottom_frame = ttk.LabelFrame(self)
             TkHelper.configure_grid_x(self._bottom_frame, col=0, weight=1)
             TkHelper.configure_grid_y(self._bottom_frame, row=7, weight=1)
-            self._bottompanel = BottomPanel(self._bottom_frame) #ToDo
+            self._bottompanel = BottomPanel(self._bottom_frame)
             self._bottom_frame.pack(side = tk.BOTTOM, fill = tk.X, expand = False)
-
+            
         # Load stored previously data
         def load_last_data() -> List['FileFrame']:
-            #ToDo load last opened files.
             self._editor_frame = ttk.Frame(self)
-            MainWindow._editor_manager = EditorManager(MainWindow, root, self._editor_frame) #ToDo
+            MainWindow._editor_manager = EditorManager(MainWindow, root, self._editor_frame)
             self._editor_frame.pack(side = tk.TOP, fill = tk.BOTH, expand = True)
 
         self._root = root
-
         load_environment_config()
         general_window_setup()
 
         #Frames:
         bottom_panel_setup()
         top_menu_bar_setup()
-        #~ project_left_panel_setup()
         load_last_data()
 
         root.protocol("WM_DELETE_WINDOW", lambda: MainWindow.exit_(self._root))
@@ -120,7 +115,6 @@ class MainWindow(ttk.Frame):
     def load_file(cls: 'MainWindow') -> None:
         logging.debug("`MainWindow.load_file` called")
         MainWindow._editor_manager.load_file()
-        pass
 
     @classmethod
     def save_file(cls: 'MainWindow', as_new: bool = False) -> None:
@@ -189,9 +183,6 @@ def argparse_logging_settings():
     parser.add_argument("--path", help="file path to store logs",
                         action="store", dest="path", default=None)
 
-def argparse_program_settings():
-    pass #To-Do
-
 def argparse_validate():
     args = parser.parse_args()
     return args
@@ -206,7 +197,6 @@ if __name__ == "__main__" and __debug__:
 if __name__ == "__main__" and not __debug__:
     parser = ArgumentParser(description=MainWindow.__doc__)
     argparse_logging_settings()
-    argparse_program_settings()
 
     args = argparse_validate()
     logging.basicConfig(level=args.loglevel,
